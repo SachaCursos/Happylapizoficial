@@ -1,0 +1,265 @@
+CONTEXTO PROYECTO — HAPPY LAPIZ
+Para Claude Code / Agente de desarrollo
+========================================
+
+1. QUE ES ESTE PROYECTO
+------------------------
+Happy Lapiz es un ecommerce chileno de juguetes educativos y materiales de arte para ninos.
+- Sitio: happylapiz.cl / happy-lapiz.myshopify.com
+- Canales de venta: Shopify (web principal), Mercado Libre, Mercado Pago
+- Canal publicitario principal: Meta Ads (Facebook/Instagram)
+- Operador: Sacha Damjanic (dueno, maneja todo: finanzas, Meta Ads, logistica)
+- Diseno/Instagram: Nati (nataliavenizelos@gmail.com, @happy_lapiz)
+- Producto heroe: Piedras Musicales Luminosas (SKU 1510) — ~83-87% del volumen de pedidos
+
+
+2. OBJETIVO DEL SISTEMA A DESARROLLAR
+---------------------------------------
+Construir un dashboard financiero automatizado para analisis P&L de ecommerce, con:
+1. Backend Python que consolida datos de multiples fuentes (Shopify via Windsor.ai, Meta Ads via API directa, Mercado Libre via archivos xlsx, BluExpress, Mercado Pago)
+2. Dashboard interactivo HTML con pestanas: Shopify P&L / Mercado Libre P&L / Meta Ads vs Ventas / Fuentes de datos / Recomendaciones / Data faltante
+3. Reportes automaticos enviados por email (Make.com ya configurado: escenarios 4317154 diario, 4317155 semanal, 4317156 mensual)
+4. Ingesta de JSON de Meta Ads descargado desde meta_ads_happylapiz.html (app "Integracion Claude", cuenta 449499746278703)
+
+
+3. BASE DE DATOS POSTGRES — TABLAS DISPONIBLES
+------------------------------------------------
+Todas estas tablas ya existen en la base de datos (creadas por migrate_to_postgres.py):
+
+meta_ads_diario
+  Gasto diario Meta Ads historico 2022-2025
+  Columnas: nombre_de_la_campana, nombre_del_conjunto_de_anuncios, nombre_del_anuncio,
+            dia, tipo_de_resultado, resultados, importe_gastado_clp, inicio_del_informe,
+            fin_del_informe, anio
+  NOTA: gasto en CLP, no aplicar conversion de moneda
+
+shopify_ventas_historico
+  Ventas diarias Shopify 2020-2024 (sin ID pedido)
+  Columnas: nombre_del_producto, precio_de_la_variante_de_producto, dia,
+            nombre_del_cliente, ciudad_del_envio, ventas_totales
+
+shopify_ventas_2025
+  Ventas diarias Shopify 2025 (CON ID pedido)
+  Columnas: titulo_del_producto, precio_de_la_variante_de_producto, dia,
+            nombre_del_cliente, ciudad_del_envio, id_de_pedido, ventas_totales, anio
+  CRITICO: deduplicar por id_de_pedido antes de sumar revenue
+
+shopify_facturas
+  Comisiones y app fees Shopify (ciclos del 12 al 11 del mes siguiente)
+  Columnas: bill_, store_name, shop_id, myshopifycom_url, charge_category,
+            description, amount, currency, start_of_billing_cycle, end_of_billing_cycle,
+            date, order, rate, app, original_amount, original_currency, exchange_rate
+  NOTA: usar SOLO para confirmar app fees y comision Shopify 1%; NO para ventas por mes
+
+ml_facturacion
+  Facturacion MercadoLibre nov2025-mar2026
+  Columnas: n_de_factura_fiscal, fecha_del_cargo, numero_del_cargo, detalle,
+            descontado_de_la_operacion, estado_del_cargo, cargo_que_bonifica,
+            valor_del_cargo, porcentaje_por_categoria, costo_por_categoria, costo_fijo,
+            subtotal_sin_descuento, valor_del_descuento, motivo_del_descuento,
+            numero_de_venta, pago, fecha_de_venta, canal_de_venta, cliente,
+            cantidad_vendida, precio_unitario, total_de_la_venta, numero_de_envio,
+            numero_de_paquete, envio_a_cargo_del_cliente, numero_de_publicacion,
+            titulo_de_publicacion, tipo_de_publicacion, categoria_de_la_publicacion,
+            codigo_ml, seccion_de_mercado_libre_y_mercado_pago, mes, anio
+  CRITICO: numero_de_paquete lleno = FULL (ML despacha) | vacio = FLEX (Sacha despacha)
+
+ml_cargos_full
+  Cargos almacenamiento ML Full diario
+  Columnas: n_de_factura, fecha_de_cargo, n_de_cargo, detalle, n_de_cargo_bonificado, mes, anio
+
+ml_notas_credito_flex     Notas de credito envios Flex ML (mes, anio incluidos)
+ml_notas_credito          Notas de credito generales ML (mes, anio incluidos)
+ml_notas_debito_flex      Notas de debito Flex ML (solo marzo 2026)
+ml_notas_credito_mp       Notas de credito MercadoPago (solo marzo 2026)
+
+mp_facturacion
+  Facturacion MercadoPago nov2025-mar2026
+  Columnas: n_de_factura_fiscal, fecha_del_cargo, numero_del_cargo, numero_del_movimiento,
+            detalle, cobrado_en_la_operacion, estado_del_cargo, cargo_que_anula,
+            valor_del_cargo, tipo_de_operacion, operacion_relacionada, tipo_de_pago,
+            numero_de_sucursal, nombre_de_sucursal, referencia_externa, cliente,
+            valor_de_la_operacion, seccion_de_mercado_libre_y_de_mercado_pago, mes, anio
+
+ml_pagos_facturas         Pagos de facturas ML por mes
+
+cartola_bancaria
+  Movimientos bancarios ene-mar 2026
+  Columnas: monto, descripcion, fecha, tipo, mes, anio
+  NOTA: tipo A = abono, tipo C = cargo
+  NOTA: transferencias DAMJANIC SILVA = aportes/retiros personales, NO son ventas
+
+marketing_keywords
+  Asociacion campanas Meta Ads → productos
+  Columnas: producto, palabras, prioridad
+
+blueexpress_tarifario
+  Tarifario BluExpress por comunas y pesos
+  Columnas: campo, detalle
+
+
+4. FUENTES DE DATOS EXTERNAS (para datos 2026+)
+-------------------------------------------------
+Ventas Shopify 2026: Windsor.ai
+  Connector: shopify | Cuenta: happy-lapiz.myshopify.com
+  Campos: date, order_id, order_total_price
+  CRITICO: deduplicar por order_id antes de sumar
+  Valores en CLP BRUTO con IVA → dividir por 1.19 para neto
+
+Meta Ads (datos recientes): JSON adjunto por Sacha
+  Cuenta ID: 449499746278703
+  Estructura JSON: meta{}, gasto_diario[{dia, gasto_clp, impresiones, clics, ctr, cpm, cpc}],
+                   campanas[{id, nombre, gasto_clp, impresiones, clics, compras, ingresos_clp, roas}],
+                   adsets[{id, nombre, campana, producto, gasto_clp, ...}]
+  gasto_clp ya esta en CLP, no aplicar conversion de moneda
+
+
+5. REGLAS CRITICAS DE CALCULO
+--------------------------------
+REGLA 1 — IVA VENTAS:        ventas_brutas / 1.19 = ventas_netas
+REGLA 2 — IVA COGS:          costo_bruto / 1.19 = costo_neto
+REGLA 3 — SHOPIFY DEDUPLICACION: SIEMPRE hacer DISTINCT order_id antes de sumar revenue
+REGLA 4 — BLUEEXPRESS BASE DEVENGADA: pago mes N+1 = costo devengado mes N
+REGLA 5 — PYMESPACE: pedidos × tarifa (400→1000, 401-600→735, >600→600 neto/pedido)
+REGLA 6 — COMISION MP: 2.89% + IVA = 3.4391% efectivo sobre ventas BRUTAS
+REGLA 7 — COMISION SHOPIFY: 1% sobre ventas BRUTAS CLP
+REGLA 8 — IVA PROVEEDORES: BluExpress, Pymespace, Contabilidad, ecourrier: monto/1.19
+           Bodega (RUT 78.986.040-8): EXENTA
+REGLA 9 — SERVICIOS DIGITALES: Shopify, Klaviyo, Meta, ChatGPT, Canva, Claude, MS: sin dividir
+REGLA 10 — ML TIPOS CARGO: filtrar 'Cargo por venta' O 'Anulacion del cargo por venta'
+
+
+6. ESTRUCTURA DEL P&L
+-----------------------
+P&L SHOPIFY:
+  Ventas Netas = ventas_brutas / 1.19
+  - COGS neto × unidades
+  - BluExpress (devengado: pago_siguiente_mes / 1.19)
+  - Gasto Meta Ads
+  - Armado/Fulfillment (Pymespace)
+  - Comision Mercado Pago (3.4391% × ventas_brutas)
+  - Comision Shopify (1% × ventas_brutas)
+  = MARGEN BRUTO
+  - Costos Fijos
+  = RESULTADO OPERATIVO
+
+P&L MERCADO LIBRE:
+  Ventas Netas ML = SUM(total_de_la_venta WHERE 'Cargo por venta') / 1.19
+  - COGS neto × cantidad_vendida
+  - Comision ML, Envios ML, Ecourrier Flex (3200 × pedidos_flex)
+  - Product Ads, Storage Full, Colecta Full
+  - Fulfillment Flex (1000 × pedidos_flex), Mantenimiento Mi Pagina
+  = MARGEN BRUTO ML
+
+
+7. COSTOS FIJOS MENSUAL (total: ~1,038,550 CLP)
+-------------------------------------------------
+Previred: 407,000 | Bodega: 183,000 | Klaviyo: 137,000 | Shopify: 44,900
+Zoko: 38,400 | Revie: 14,500 | Selleasy: 5,400 | Contabilidad: 67,227
+ChatGPT: 18,300 | Claude.ai: 21,900 | Microsoft 365: 7,900 | Canva: 8,300
+GoDaddy: 8,333 | Mantencion TC: 15,500 | Oficina virtual: 13,500
+WOM: 16,807 | Cuenta bancaria: 16,807
+Semanal: ~239,894 CLP
+
+
+8. COGS POR PRODUCTO (neto IVA)
+---------------------------------
+SKU 1510  Piedras Musicales Luminosas       15,630 CLP
+SKU 1230  Pista de Autos Didactica           6,303 CLP
+SKU 1530  Juego Construccion Magnetico      15,210 CLP
+SKU 1140  Libro Educativo 3D                 4,622 CLP
+SKU 1210  Pack Mi Primer Taladro             5,042 CLP
+SKU 1520  Monitor para Vehiculos            11,597 CLP
+SKU 1150  Marcadores Borde Color             3,361 CLP
+SKU 1141  Marcadores 60 Doble Punta          7,563 CLP
+SKU 1142  Marcadores 120 Doble Punta        11,849 CLP
+SKU 1190  Mochila Educativa Princesas        5,042 CLP
+SKU 1260  Antigravity Car Rojo               5,882 CLP
+SKU 1261  Antigravity Car Azul               5,882 CLP
+SKU 1135  Alfombra Estimuladora Gateo        2,521 CLP
+SKU 1135b Alfombra Gateo 1 Metro             2,521 CLP
+SKU 1139  Kit Caligrafia 4 Tematicas         3,361 CLP
+SKU 1137  Cascabel Sensorial Bebes           3,146 CLP
+SKU DK01  Ducha Koala                        5,882 CLP
+SKU CD01  Cubo Didactico Bebes               2,521 CLP
+SKU 1340  Kit de Aseo XL                    16,807 CLP
+SKU 1330  Maleta de Cocina XL               14,034 CLP
+SKU 1320  Maleta Hospital XL                14,034 CLP
+SKU 1111  Set Acuarelas Metalizadas          3,361 CLP
+SKU 1112  Plumones Acrilico 5mm              3,361 CLP
+SKU 1125  Kit Pintura de Marmol              3,361 CLP
+SKU 16000 Dibuja Letras con Happy Lapiz      4,202 CLP
+SKU 16200 Happy Spinners                     3,361 CLP
+SKU 16100 Juguete Cangrejo Induccion         7,563 CLP
+SKU 1114  Curso Online (digital)                 0 CLP
+
+
+9. UMBRALES Y ALERTAS
+-----------------------
+ROAS global < 3.5x                          → ALERTA ROJA
+Gasto Meta / Ventas netas > 28%             → ALERTA ROJA
+Margen bruto < 30%                          → ALERTA ROJA
+Product Ads ML / Ventas netas ML > 15%     → ALERTA ROJA
+Cargo incumplimiento Full ML > 0            → ALERTA ROJA
+Resultado operativo negativo                → Senalar causa principal
+
+Clasificacion productos:
+  ESCALAR  → margen bruto > 65% y volumen relevante
+  OK       → margen bruto > 50%
+  REVISAR  → margen bruto < 50%
+  PAUSAR   → perdida operativa o ROAS < 1.5x
+
+
+10. MATCHING CAMPANAS META → PRODUCTOS
+----------------------------------------
+"Pista de autos", "No necesita pilas"       → SKU 1230
+"Estuche educativo", "Libro educativo"      → SKU 1140
+"Piedras musicales", "Black Friday"         → SKU 1510
+"Mi Primer Taladro", "Fernanda", "Melissa"  → SKU 1210
+"Construccion", "Magnetico"                 → SKU 1530
+Sin match                                   → "Otros"
+
+
+11. PUNTO DE EQUILIBRIO
+-------------------------
+Break-even total con CF: ~7,000,000 ventas netas/mes
+Target rentabilidad real: ~9,000,000 ventas netas/mes con ROAS >= 4.5x
+Target diario minimo CF: ~68,541 neto/dia
+
+
+12. IDENTIDAD DE MARCA
+------------------------
+Azul principal: #233dff | Amarillo: #ffd51e | Azul claro: #849bff
+Azul pastel: #d8dfff | Blanco: #ffffff | Fuente: Poppins
+
+
+13. INTEGRACIONES ACTIVAS
+---------------------------
+Windsor.ai: Shopify live data 2026+ (connector shopify)
+Meta Ads API: cuenta 449499746278703 (token dura ~60 dias)
+Klaviyo: account QVtKJD
+Make.com: escenarios 4317154 diario, 4317155 semanal, 4317156 mensual
+Zoko: WhatsApp Business (en evaluacion cancelar)
+
+
+14. CONTEXTO FINANCIERO Q1 2026
+---------------------------------
+Enero 2026: campana Pista de Autos dominante, ROAS bajo
+Febrero 2026: Pista de Autos + inicio Piedras Musicales; ventas netas Shopify ~5,800,000
+Marzo 2026: Piedras Musicales como producto dominante; mes cerro en perdida operativa
+             Pista de Autos ~2.2-2.5x ROAS; Piedras BF final ~5.6-5.78x ROAS
+ML nov25-mar26: margen blended ~+8.2%; Product Ads es principal presion de margen
+
+
+15. NOTAS CRITICAS PARA EL CODIGO
+------------------------------------
+1. NUNCA usar TC Santander como fuente primaria de gasto Meta Ads
+2. Transferencias "DAMJANIC SILVA" = aportes/retiros personales, NO ventas
+3. Pago SII en cartola = IVA, NO incluir en P&L operativo
+4. Memorae.ai (RUT 76.684.648-3) CANCELADO; alertar si aparece
+5. Token Meta Ads vence ~60 dias; manejar con mensaje claro
+6. Shopify cicla dia 12 al 11; NO usar esas fechas para P&L calendario
+7. Para 2026: Windsor = fuente primaria Shopify; 2020-2025: tablas Postgres
+8. JSON Meta Ads tiene PRIORIDAD sobre tabla meta_ads_diario para el periodo cubierto
+9. BluExpress: factor volumetrico = (largo × ancho × alto) / 4000
+10. Origen despachos BluExpress: siempre Santiago

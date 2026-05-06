@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Lapiz — Dashboard Financiero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --azul: #233dff;
+      --amarillo: #ffd51e;
+      --azul-claro: #849bff;
+      --azul-pastel: #d8dfff;
+      --blanco: #ffffff;
+      --gris-fondo: #f4f6fb;
+      --gris-borde: #e2e6f0;
+      --rojo-alerta: #e53e3e;
+      --verde: #38a169;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: var(--gris-fondo); color: #222; }
+
+    /* Header */
+    .header {
+      background: var(--azul);
+      color: var(--blanco);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header img { height: 44px; }
+    .header h1 { font-size: 1.3rem; font-weight: 600; }
+    .header .periodo { margin-left: auto; font-size: 0.85rem; opacity: 0.85; }
+
+    /* Alerts */
+    .alerts-bar {
+      background: #fff5f5;
+      border-bottom: 2px solid var(--rojo-alerta);
+      padding: 10px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .alert-pill {
+      background: var(--rojo-alerta);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    /* Tabs */
+    .tabs-nav {
+      background: var(--blanco);
+      border-bottom: 2px solid var(--gris-borde);
+      display: flex;
+      overflow-x: auto;
+      padding: 0 24px;
+    }
+    .tab-btn {
+      padding: 14px 20px;
+      border: none;
+      background: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-btn.active { color: var(--azul); border-bottom-color: var(--azul); }
+    .tab-btn:hover:not(.active) { color: var(--azul-claro); }
+
+    /* Tab content */
+    .tab-content { display: none; padding: 28px 32px; }
+    .tab-content.active { display: block; }
+
+    /* KPI cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .kpi-card {
+      background: var(--blanco);
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .kpi-card .label { font-size: 0.75rem; color: #888; margin-bottom: 6px; }
+    .kpi-card .value { font-size: 1.4rem; font-weight: 600; color: var(--azul); }
+    .kpi-card .value.rojo { color: var(--rojo-alerta); }
+    .kpi-card .value.verde { color: var(--verde); }
+    .kpi-card .sub { font-size: 0.75rem; color: #aaa; margin-top: 4px; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    table { width: 100%; border-collapse: collapse; background: var(--blanco); }
+    th {
+      background: var(--azul);
+      color: white;
+      padding: 11px 14px;
+      text-align: left;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    td { padding: 10px 14px; font-size: 0.82rem; border-bottom: 1px solid var(--gris-borde); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--azul-pastel); }
+    .num { text-align: right; }
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .badge-escalar { background: #c6f6d5; color: #276749; }
+    .badge-ok { background: #bee3f8; color: #2b6cb0; }
+    .badge-revisar { background: #fefcbf; color: #744210; }
+    .badge-pausar { background: #fed7d7; color: #822727; }
+
+    /* Charts */
+    .chart-wrap {
+      background: var(--blanco);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .chart-wrap h3 { font-size: 0.9rem; margin-bottom: 14px; color: #444; }
+    canvas { max-height: 300px; }
+
+    /* Recommendations */
+    .rec-section { margin-bottom: 24px; }
+    .rec-section h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--azul);
+      border-left: 4px solid var(--amarillo);
+      padding-left: 10px;
+      margin-bottom: 12px;
+    }
+    .rec-item {
+      background: var(--blanco);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      font-size: 0.83rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    /* Upload zone */
+    .upload-section { margin-bottom: 24px; }
+    .upload-section h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; color: #444; }
+    .upload-zone {
+      border: 2px dashed var(--azul-claro);
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      background: var(--azul-pastel);
+      color: var(--azul);
+      font-size: 0.85rem;
+    }
+    .upload-zone input[type=file] { display: none; }
+    .upload-btn {
+      background: var(--azul);
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .upload-btn:hover { background: #1a2fcc; }
+
+    /* Data sources table */
+    .fuentes-table th { background: #444; }
+
+    @media (max-width: 600px) {
+      .header { padding: 12px 16px; }
+      .tab-content { padding: 16px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <img src="/static/logo_Happy_Lapiz_2023_CON_SOMBRA.png" alt="Happy Lapiz" onerror="this.style.display='none'">
+  <h1>Dashboard Financiero</h1>
+  <span class="periodo">Período: {{ periodo | default('—') }}</span>
+</div>
+
+{% if alertas %}
+<div class="alerts-bar">
+  {% for a in alertas %}
+  <span class="alert-pill">⚠ {{ a.mensaje }}</span>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="tabs-nav">
+  <button class="tab-btn active" onclick="showTab('shopify')">Shopify P&L</button>
+  <button class="tab-btn" onclick="showTab('ml')">Mercado Libre P&L</button>
+  <button class="tab-btn" onclick="showTab('meta')">Meta Ads vs Ventas</button>
+  <button class="tab-btn" onclick="showTab('fuentes')">Fuentes de Data</button>
+  <button class="tab-btn" onclick="showTab('recomendaciones')">Recomendaciones</button>
+  <button class="tab-btn" onclick="showTab('faltante')">Data Faltante</button>
+</div>
+
+<!-- PESTAÑA 1: SHOPIFY P&L -->
+<div id="tab-shopify" class="tab-content active">
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Ventas Brutas</div>
+      <div class="value">{{ pnl_shopify.ventas_brutas | clp }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Ventas Netas</div>
+      <div class="value">{{ pnl_shopify.ventas_netas | clp }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Pedidos</div>
+      <div class="value">{{ pnl_shopify.pedidos }}</div>
+      <div class="sub">Ticket prom. {{ pnl_shopify.ticket_promedio | clp }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">ROAS</div>
+      <div class="value {% if pnl_shopify.roas < 3.5 %}rojo{% elif pnl_shopify.roas >= 4.5 %}verde{% endif %}">
+        {{ pnl_shopify.roas }}x
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Gasto Meta</div>
+      <div class="value">{{ pnl_shopify.meta_gasto | clp }}</div>
+      <div class="sub">{{ pnl_shopify.pct_meta_ventas }}% de ventas netas</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Margen Bruto</div>
+      <div class="value {% if pnl_shopify.margen_pct < 30 %}rojo{% elif pnl_shopify.margen_pct > 50 %}verde{% endif %}">
+        {{ pnl_shopify.margen_pct }}%
+      </div>
+      <div class="sub">{{ pnl_shopify.margen_bruto | clp }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Resultado Operativo</div>
+      <div class="value {% if pnl_shopify.resultado_operativo < 0 %}rojo{% else %}verde{% endif %}">
+        {{ pnl_shopify.resultado_operativo | clp }}
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <h3>Waterfall P&L Shopify</h3>
+    <canvas id="waterfallChart"></canvas>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th class="num">CLP</th>
+          <th class="num">% Ventas Netas</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set vn = pnl_shopify.ventas_netas %}
+        <tr><td><b>Ventas Netas</b></td><td class="num"><b>{{ pnl_shopify.ventas_netas | clp }}</b></td><td class="num">100%</td></tr>
+        <tr><td>– Gasto Meta Ads</td><td class="num">{{ pnl_shopify.meta_gasto | clp }}</td><td class="num">{{ pnl_shopify.pct_meta_ventas }}%</td></tr>
+        <tr><td>– BluExpress (devengado)</td><td class="num">{{ pnl_shopify.blueexpress_neto | clp }}</td><td class="num">{{ ((pnl_shopify.blueexpress_neto / vn * 100) if vn else 0) | round(1) }}%</td></tr>
+        <tr><td>– Fulfillment (Pymespace)</td><td class="num">{{ pnl_shopify.fulfillment | clp }}</td><td class="num">{{ ((pnl_shopify.fulfillment / vn * 100) if vn else 0) | round(1) }}%</td></tr>
+        <tr><td>– Comisión Mercado Pago</td><td class="num">{{ pnl_shopify.comision_mp | clp }}</td><td class="num">{{ ((pnl_shopify.comision_mp / vn * 100) if vn else 0) | round(1) }}%</td></tr>
+        <tr><td>– Comisión Shopify</td><td class="num">{{ pnl_shopify.comision_shopify | clp }}</td><td class="num">{{ ((pnl_shopify.comision_shopify / vn * 100) if vn else 0) | round(1) }}%</td></tr>
+        <tr style="background:#f0f4ff"><td><b>Margen Bruto</b></td><td class="num"><b>{{ pnl_shopify.margen_bruto | clp }}</b></td><td class="num"><b>{{ pnl_shopify.margen_pct }}%</b></td></tr>
+        <tr><td>– Costos Fijos</td><td class="num">{{ pnl_shopify.costos_fijos | clp }}</td><td class="num">{{ ((pnl_shopify.costos_fijos / vn * 100) if vn else 0) | round(1) }}%</td></tr>
+        <tr style="background:#fff8e1"><td><b>Resultado Operativo</b></td><td class="num"><b>{{ pnl_shopify.resultado_operativo | clp }}</b></td><td class="num"><b>{{ ((pnl_shopify.resultado_operativo / vn * 100) if vn else 0) | round(1) }}%</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PESTAÑA 2: MERCADO LIBRE P&L -->
+<div id="tab-ml" class="tab-content">
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Ventas Netas ML</div>
+      <div class="value">{{ pnl_ml.ventas_netas | clp }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Pedidos FULL</div>
+      <div class="value">{{ pnl_ml.pedidos_full }}</div>
+      <div class="sub">ML despacha</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Pedidos FLEX</div>
+      <div class="value">{{ pnl_ml.pedidos_flex }}</div>
+      <div class="sub">Sacha despacha</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Margen Bruto ML</div>
+      <div class="value {% if pnl_ml.margen_pct < 10 %}rojo{% elif pnl_ml.margen_pct > 20 %}verde{% endif %}">
+        {{ pnl_ml.margen_pct }}%
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Product Ads ML</div>
+      <div class="value {% if pnl_ml.pct_product_ads > 15 %}rojo{% endif %}">
+        {{ pnl_ml.pct_product_ads }}%
+      </div>
+      <div class="sub">{{ pnl_ml.product_ads | clp }}</div>
+    </div>
+    {% if pnl_ml.incumplimiento_full > 0 %}
+    <div class="kpi-card">
+      <div class="label">⚠ Incumplimiento Full</div>
+      <div class="value rojo">{{ pnl_ml.incumplimiento_full | clp }}</div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Concepto</th><th class="num">CLP</th></tr>
+      </thead>
+      <tbody>
+        {% set vn = pnl_ml.ventas_netas %}
+        <tr><td><b>Ventas Netas ML</b></td><td class="num"><b>{{ pnl_ml.ventas_netas | clp }}</b></td></tr>
+        <tr><td>– COGS</td><td class="num">{{ pnl_ml.cogs | clp }}</td></tr>
+        <tr><td>– Comisión ML</td><td class="num">{{ pnl_ml.comision_ml | clp }}</td></tr>
+        <tr><td>– Envíos ML</td><td class="num">{{ pnl_ml.envios_ml | clp }}</td></tr>
+        <tr><td>– Ecourrier Flex</td><td class="num">{{ pnl_ml.ecourrier_flex | clp }}</td></tr>
+        <tr><td>– Product Ads</td><td class="num">{{ pnl_ml.product_ads | clp }}</td></tr>
+        <tr><td>– Storage Full</td><td class="num">{{ pnl_ml.storage_full | clp }}</td></tr>
+        <tr><td>– Colecta Full</td><td class="num">{{ pnl_ml.colecta_full | clp }}</td></tr>
+        <tr><td>– Fulfillment Flex</td><td class="num">{{ pnl_ml.fulfillment_flex | clp }}</td></tr>
+        <tr><td>– Mantenimiento Mi Página</td><td class="num">{{ pnl_ml.mantenimiento | clp }}</td></tr>
+        <tr style="background:#f0f4ff"><td><b>Margen Bruto ML</b></td><td class="num"><b>{{ pnl_ml.margen_bruto | clp }} ({{ pnl_ml.margen_pct }}%)</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PESTAÑA 3: META ADS VS VENTAS -->
+<div id="tab-meta" class="tab-content">
+  <div class="chart-wrap">
+    <h3>ROAS por Campaña / Producto</h3>
+    <canvas id="roasChart"></canvas>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Campaña</th>
+          <th>Producto</th>
+          <th class="num">Gasto</th>
+          <th class="num">Ventas</th>
+          <th class="num">ROAS</th>
+          <th>Señal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in campanas %}
+        <tr>
+          <td>{{ c.nombre }}</td>
+          <td>{{ c.producto }}</td>
+          <td class="num">{{ c.gasto_clp | clp }}</td>
+          <td class="num">{{ c.ingresos_clp | clp }}</td>
+          <td class="num">{{ c.roas }}x</td>
+          <td>
+            <span class="badge badge-{{ c.senal | lower }}">{{ c.senal }}</span>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Sin datos de campañas para el período seleccionado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PESTAÑA 4: FUENTES DE DATA -->
+<div id="tab-fuentes" class="tab-content">
+  <div class="table-wrap">
+    <table class="fuentes-table">
+      <thead>
+        <tr>
+          <th>Fuente / Archivo</th>
+          <th>Datos que aporta</th>
+          <th>Uso en dashboard</th>
+          <th>Limitaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Shopify (histórico Postgres)</td><td>Ventas diarias 2020-2024</td><td>P&L Shopify histórico</td><td>Sin ID pedido, no se puede deduplicar</td></tr>
+        <tr><td>shopify_ventas_2025 (Postgres)</td><td>Ventas diarias 2025 con ID pedido</td><td>P&L Shopify 2025</td><td>Solo hasta dic 2025</td></tr>
+        <tr><td>Windsor.ai</td><td>Órdenes Shopify 2026+ con order_id</td><td>P&L Shopify 2026+</td><td>Requiere API key activa</td></tr>
+        <tr><td>meta_ads_diario (Postgres)</td><td>Gasto Meta Ads 2022-2025</td><td>P&L Shopify, campañas</td><td>Datos históricos, sin detalle por anuncio</td></tr>
+        <tr><td>JSON Meta Ads (upload)</td><td>Gasto y campañas período reciente</td><td>Campañas vs ventas, ROAS</td><td>Token expira ~60 días; subir manualmente</td></tr>
+        <tr><td>ml_facturacion (Postgres)</td><td>Facturación ML nov2025-mar2026</td><td>P&L Mercado Libre</td><td>Carga mensual manual (xlsx)</td></tr>
+        <tr><td>cartola_bancaria (Postgres)</td><td>Movimientos bancarios ene-mar 2026</td><td>Verificación flujo de caja</td><td>No es fuente primaria de P&L</td></tr>
+        <tr><td>blueexpress_tarifario (Postgres)</td><td>Tarifas despacho por comuna/peso</td><td>Estimación costo despacho</td><td>Sujeto a actualización</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:28px">
+    <div class="upload-section">
+      <h3>Subir JSON Meta Ads</h3>
+      <div class="upload-zone">
+        <p>Arrastra o selecciona el JSON descargado desde meta_ads_happylapiz.html</p>
+        <label class="upload-btn" style="display:inline-block;cursor:pointer">
+          Seleccionar archivo
+          <input type="file" id="metaJsonInput" accept=".json" onchange="uploadMetaJson(this)">
+        </label>
+        <span id="metaJsonStatus" style="margin-left:12px;font-size:0.8rem"></span>
+      </div>
+    </div>
+
+    <div class="upload-section">
+      <h3>Subir Reporte ML (xlsx)</h3>
+      <div class="upload-zone">
+        <p>Reporte mensual de facturación de Mercado Libre</p>
+        <label class="upload-btn" style="display:inline-block;cursor:pointer">
+          Seleccionar archivo
+          <input type="file" id="mlXlsxInput" accept=".xlsx" onchange="uploadMlReport(this)">
+        </label>
+        <span id="mlXlsxStatus" style="margin-left:12px;font-size:0.8rem"></span>
+      </div>
+    </div>
+
+    <div class="upload-section">
+      <h3>Subir Cartola Bancaria (xlsx)</h3>
+      <div class="upload-zone">
+        <p>Movimientos bancarios en formato xlsx</p>
+        <label class="upload-btn" style="display:inline-block;cursor:pointer">
+          Seleccionar archivo
+          <input type="file" id="cartolaInput" accept=".xlsx" onchange="uploadCartola(this)">
+        </label>
+        <span id="cartolaStatus" style="margin-left:12px;font-size:0.8rem"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PESTAÑA 5: RECOMENDACIONES -->
+<div id="tab-recomendaciones" class="tab-content">
+  <div class="rec-section">
+    <h3>HOY</h3>
+    {% for r in recomendaciones_hoy | default([]) %}
+    <div class="rec-item">{{ r }}</div>
+    {% else %}
+    <div class="rec-item" style="color:#aaa">Sin recomendaciones urgentes para hoy.</div>
+    {% endfor %}
+  </div>
+
+  <div class="rec-section">
+    <h3>ESTA SEMANA</h3>
+    {% for r in recomendaciones_semana | default([]) %}
+    <div class="rec-item">{{ r }}</div>
+    {% else %}
+    <div class="rec-item" style="color:#aaa">Sin acciones pendientes esta semana.</div>
+    {% endfor %}
+  </div>
+
+  <div class="rec-section">
+    <h3>ESTE MES</h3>
+    {% for r in recomendaciones_mes | default([]) %}
+    <div class="rec-item">{{ r }}</div>
+    {% else %}
+    <div class="rec-item" style="color:#aaa">Sin acciones pendientes este mes.</div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- PESTAÑA 6: DATA FALTANTE -->
+<div id="tab-faltante" class="tab-content">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Dato faltante</th><th>Impacto en precisión</th><th>Cómo obtenerlo</th></tr>
+      </thead>
+      <tbody>
+        {% for f in data_faltante | default([]) %}
+        <tr><td>{{ f.dato }}</td><td>{{ f.impacto }}</td><td>{{ f.como }}</td></tr>
+        {% else %}
+        <tr><td colspan="3" style="text-align:center;color:#aaa;padding:24px">Cargando información de data faltante...</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Waterfall Chart
+const waterfallCtx = document.getElementById('waterfallChart');
+if (waterfallCtx) {
+  const pnl = {{ pnl_shopify | tojson }};
+  const labels = ['Ventas Netas', '– Meta Ads', '– BluExpress', '– Fulfillment', '– Com. MP', '– Com. Shopify', 'Margen Bruto', '– Fijos', 'Resultado'];
+  const valores = [
+    pnl.ventas_netas,
+    -pnl.meta_gasto,
+    -pnl.blueexpress_neto,
+    -pnl.fulfillment,
+    -pnl.comision_mp,
+    -pnl.comision_shopify,
+    pnl.margen_bruto,
+    -pnl.costos_fijos,
+    pnl.resultado_operativo,
+  ];
+  const bgColors = valores.map(v => v >= 0 ? '#233dff' : '#e53e3e');
+  new Chart(waterfallCtx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: valores, backgroundColor: bgColors, borderRadius: 6 }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } }
+      }
+    }
+  });
+}
+
+// ROAS Chart
+const roasCtx = document.getElementById('roasChart');
+if (roasCtx) {
+  const campanas = {{ campanas | tojson }};
+  if (campanas.length > 0) {
+    new Chart(roasCtx, {
+      type: 'bar',
+      data: {
+        labels: campanas.map(c => c.nombre.substring(0, 30)),
+        datasets: [{
+          label: 'ROAS',
+          data: campanas.map(c => c.roas),
+          backgroundColor: campanas.map(c => c.roas >= 3.5 ? '#233dff' : '#e53e3e'),
+          borderRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          annotation: {
+            annotations: { line: { type: 'line', yMin: 3.5, yMax: 3.5, borderColor: '#ffd51e', borderWidth: 2 } }
+          }
+        },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+}
+
+async function uploadFile(url, input, statusId) {
+  const status = document.getElementById(statusId);
+  if (!input.files[0]) return;
+  const fd = new FormData();
+  fd.append('file', input.files[0]);
+  status.textContent = 'Subiendo...';
+  status.style.color = '#666';
+  try {
+    const r = await fetch(url, { method: 'POST', body: fd });
+    const data = await r.json();
+    if (r.ok) {
+      status.textContent = '✓ ' + (data.mensaje || 'Archivo procesado');
+      status.style.color = '#38a169';
+    } else {
+      status.textContent = '✗ ' + (data.detail || 'Error');
+      status.style.color = '#e53e3e';
+    }
+  } catch(e) {
+    status.textContent = '✗ Error de conexión';
+    status.style.color = '#e53e3e';
+  }
+}
+
+function uploadMetaJson(input) { uploadFile('/upload/meta-json', input, 'metaJsonStatus'); }
+function uploadMlReport(input) { uploadFile('/upload/ml-report', input, 'mlXlsxStatus'); }
+function uploadCartola(input) { uploadFile('/upload/cartola', input, 'cartolaStatus'); }
+</script>
+</body>
+</html>
