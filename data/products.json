@@ -335,28 +335,27 @@
   },
   {
     "sku": "3011",
-    "nombre": "Pack Didáctico 1",
+    "nombre": "Pack Didáctico 2",
     "costo_neto": 10925,
     "dimensiones_cm": {"ancho": 51.5, "alto": 24, "largo": 10},
     "peso_gramos": 1000,
-    "keywords": ["pack didactico 1"],
-    "canal_ml": true,
-    "canal_shopify": true,
-    "es_pack": true,
-    "componentes": ["1230", "1140"]
-  },
-  {
-    "sku": "3012",
-    "nombre": "Pack Didáctico 2",
-    "costo_neto": null,
-    "dimensiones_cm": null,
-    "peso_gramos": null,
     "keywords": ["pack didactico 2"],
     "canal_ml": true,
     "canal_shopify": true,
     "es_pack": true,
-    "componentes": null,
-    "data_pendiente": ["composicion_pack", "costo_neto", "dimensiones_cm", "peso_gramos"]
+    "componentes": ["1140", "1230"]
+  },
+  {
+    "sku": "3012",
+    "nombre": "Pack Didáctico 1",
+    "costo_neto": 9664,
+    "dimensiones_cm": {"ancho": 59, "alto": 25, "largo": 7},
+    "peso_gramos": 1300,
+    "keywords": ["pack didactico 1"],
+    "canal_ml": true,
+    "canal_shopify": true,
+    "es_pack": true,
+    "componentes": ["1210", "1140"]
   },
   {
     "sku": "3013",
