@@ -10,6 +10,7 @@ SHOPIFY_FILE = os.path.join(BASE_DIR, "shopify_orders_data.json")
 OUTPUT_FILE = os.path.join(BASE_DIR, "pl_data.json")
 
 BLUEEXPRESS_TARIFF_FILE = os.path.join(DATA_DIR, "blueexpress_tariff.json")
+BLUEEXPRESS_XLSX_FILE = os.path.join(DATA_DIR, "blueexpress_tarifario.xlsx")
 PRODUCTS_FILE = os.path.join(DATA_DIR, "products.json")
 COMMISSIONS_FILE = os.path.join(DATA_DIR, "commissions.json")
 SHIPPING_FILE = os.path.join(DATA_DIR, "shipping_rates.json")
@@ -25,7 +26,27 @@ def load_json(path):
 
 # ── BluExpress ────────────────────────────────────────────────────────────────
 
+def auto_build_blueexpress():
+    """Si existe el XLSX pero no el JSON, lo convierte automáticamente."""
+    if os.path.exists(BLUEEXPRESS_TARIFF_FILE):
+        return
+    if not os.path.exists(BLUEEXPRESS_XLSX_FILE):
+        return
+    print("BluExpress XLSX encontrado — convirtiendo a JSON...")
+    tools_script = os.path.join(BASE_DIR, "tools", "build_blueexpress_json.py")
+    import subprocess
+    result = subprocess.run(
+        [sys.executable, tools_script, BLUEEXPRESS_XLSX_FILE],
+        capture_output=True, text=True,
+    )
+    if result.returncode == 0:
+        print(result.stdout.strip())
+    else:
+        print(f"⚠️  No se pudo convertir BluExpress XLSX: {result.stderr.strip()}")
+
+
 def load_blueexpress():
+    auto_build_blueexpress()
     if not os.path.exists(BLUEEXPRESS_TARIFF_FILE):
         return None
     return load_json(BLUEEXPRESS_TARIFF_FILE)
