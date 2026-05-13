@@ -15,3 +15,6 @@ uploads/*.xlsx
 data/*.xlsx
 data/*.csv
 .DS_Store
+*.json.local
+meta_ads_data.json
+report_output.txt
