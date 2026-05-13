@@ -17,4 +17,6 @@ data/*.csv
 .DS_Store
 *.json.local
 meta_ads_data.json
+shopify_orders_data.json
+pl_data.json
 report_output.txt

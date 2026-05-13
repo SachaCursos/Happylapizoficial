@@ -1,0 +1,126 @@
+{
+  "total_mensual_neto": 1038550,
+  "semanas_por_mes": 4.33,
+  "prorrateo_semanal_neto": 239894,
+  "nota_iva": "Montos ya en neto CLP. Servicios digitales extranjeros: usar monto tarjeta directamente (IVA digital gestionado por contador). Proveedores locales con IVA: bruto ÷ 1.19. Bodega RUT 78.986.040-8: exenta de IVA.",
+  "items": [
+    {
+      "nombre": "Previred (Remuneraciones)",
+      "monto_neto": 407000,
+      "categoria": "personal",
+      "iva": "sin_iva",
+      "notas": "Normalizado; banco paga en fecha irregular"
+    },
+    {
+      "nombre": "Bodega",
+      "monto_neto": 183000,
+      "categoria": "operaciones",
+      "iva": "exenta",
+      "proveedor_rut": "78.986.040-8"
+    },
+    {
+      "nombre": "Klaviyo",
+      "monto_neto": 137000,
+      "categoria": "marketing",
+      "iva": "digital",
+      "notas": "IVA digital gestionado por contador"
+    },
+    {
+      "nombre": "Shopify Plan anual",
+      "monto_neto": 44900,
+      "categoria": "plataforma",
+      "iva": "digital",
+      "notas": "US$588/año ÷ 12. ALERTA: cobro único en abril ~$600.000–$650.000 CLP"
+    },
+    {
+      "nombre": "Shopify Zoko",
+      "monto_neto": 38400,
+      "categoria": "plataforma",
+      "iva": "digital",
+      "notas": "US$42.44/mes. En evaluación cancelar"
+    },
+    {
+      "nombre": "Shopify Revie",
+      "monto_neto": 14500,
+      "categoria": "plataforma",
+      "iva": "digital",
+      "notas": "US$9 fijo + variable"
+    },
+    {
+      "nombre": "Shopify Selleasy",
+      "monto_neto": 5400,
+      "categoria": "plataforma",
+      "iva": "digital",
+      "notas": "Variable US$0–18/mes"
+    },
+    {
+      "nombre": "Contabilidad",
+      "monto_neto": 67227,
+      "categoria": "administracion",
+      "iva": "incluido",
+      "proveedor_rut": "76.524.714-4",
+      "notas": "$80.000 bruto ÷ 1.19. Pago irregular en banco"
+    },
+    {
+      "nombre": "ChatGPT",
+      "monto_neto": 18300,
+      "categoria": "herramientas",
+      "iva": "digital"
+    },
+    {
+      "nombre": "Claude.ai",
+      "monto_neto": 21900,
+      "categoria": "herramientas",
+      "iva": "digital",
+      "notas": "US$23.80/mes"
+    },
+    {
+      "nombre": "Microsoft 365",
+      "monto_neto": 7900,
+      "categoria": "herramientas",
+      "iva": "digital",
+      "notas": "US$8.66/mes"
+    },
+    {
+      "nombre": "Canva",
+      "monto_neto": 8300,
+      "categoria": "herramientas",
+      "iva": "digital"
+    },
+    {
+      "nombre": "GoDaddy",
+      "monto_neto": 8333,
+      "categoria": "infraestructura",
+      "iva": "digital",
+      "notas": "~$100.000/año ÷ 12"
+    },
+    {
+      "nombre": "Mantención TC Santander",
+      "monto_neto": 15500,
+      "categoria": "administracion",
+      "iva": "sin_iva"
+    },
+    {
+      "nombre": "Oficina virtual",
+      "monto_neto": 13500,
+      "categoria": "operaciones",
+      "iva": "incluido",
+      "proveedor_rut": "76.830.014-3",
+      "notas": "ESTIMADO. $16.065 bruto ÷ 1.19"
+    },
+    {
+      "nombre": "WOM",
+      "monto_neto": 16807,
+      "categoria": "infraestructura",
+      "iva": "incluido",
+      "notas": "$20.000 bruto ÷ 1.19"
+    },
+    {
+      "nombre": "Cuenta bancaria",
+      "monto_neto": 16807,
+      "categoria": "administracion",
+      "iva": "incluido",
+      "notas": "$20.000 bruto ÷ 1.19"
+    }
+  ]
+}

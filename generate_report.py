@@ -6,6 +6,7 @@ from datetime import datetime
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 META_FILE = os.path.join(BASE_DIR, "meta_ads_data.json")
+PL_FILE = os.path.join(BASE_DIR, "pl_data.json")
 OUTPUT_FILE = os.path.join(BASE_DIR, "report_output.txt")
 
 ROAS_MINIMO = 3.5
@@ -35,16 +36,21 @@ def load_json(path):
 
 # ── Generación ────────────────────────────────────────────────────────────────
 
+def pct_badge(pct):
+    if pct >= 15:
+        return "🟢"
+    if pct >= 5:
+        return "🟡"
+    return "🔴"
+
+
 def generate_report():
     if not os.path.exists(META_FILE):
         print(f"Error: {META_FILE} no encontrado. Ejecuta fetch_meta_ads.py primero.")
         sys.exit(1)
 
     meta_data = load_json(META_FILE)
-    # Disponibles para extensiones futuras (P&L, COGS, etc.)
-    # products = load_json(os.path.join(DATA_DIR, "products.json"))
-    # commissions = load_json(os.path.join(DATA_DIR, "commissions.json"))
-    # shipping_rates = load_json(os.path.join(DATA_DIR, "shipping_rates.json"))
+    pl_data = load_json(PL_FILE) if os.path.exists(PL_FILE) else None
 
     info = meta_data["meta"]
     resumen = meta_data["resumen"]
@@ -175,8 +181,58 @@ def generate_report():
         )
     L.append("")
 
+    # ── P&L completo ──
+    if pl_data:
+        ing = pl_data["ingresos"]
+        cv = pl_data["costo_ventas"]
+        mb = pl_data["margen_bruto"]
+        gv = pl_data["gastos_variables"]
+        mc = pl_data["margen_contribucion"]
+        mkt = pl_data["marketing"]
+        cf = pl_data["costos_fijos"]
+        ut = pl_data["utilidad_operacional"]
+        met = pl_data["metricas"]
+
+        fijos_label = "Costos fijos (mensual)" if mode == "monthly" else "Costos fijos (prorrateado)"
+
+        L += [
+            "💰 P&L OPERACIONAL",
+            SEP_THIN,
+            f"{'Ventas brutas:':<28} {clp(ing['ventas_brutas_clp']):>14}",
+            f"{'  − IVA (19%):':<28} {clp(ing['iva_clp']):>14}",
+            f"{'Ventas netas:':<28} {clp(ing['ventas_netas_clp']):>14}",
+            f"{'  − COGS:':<28} {clp(cv['cogs_clp']):>14}",
+            f"{'Margen bruto:':<28} {clp(mb['clp']):>14}  ({mb['pct']}%)  {pct_badge(mb['pct'])}",
+            SEP_THIN,
+            f"{'  − Comisión Shopify (1%):':<28} {clp(gv['comision_shopify_clp']):>14}",
+            f"{'  − Comisión MercadoPago:':<28} {clp(gv['comision_mercadopago_clp']):>14}",
+            f"{'  − Envíos BluExpress:':<28} {clp(gv['envios_blueexpress_clp']):>14}",
+            f"{'  − Fulfillment:':<28} {clp(gv['fulfillment_clp']):>14}",
+            f"{'Margen contribución:':<28} {clp(mc['clp']):>14}  ({mc['pct']}%)  {pct_badge(mc['pct'])}",
+            SEP_THIN,
+            f"{'  − Meta Ads:':<28} {clp(mkt['meta_ads_clp']):>14}",
+            f"{'  − {fijos_label}:':<28} {clp(cf['clp']):>14}",
+            f"{'Utilidad operacional:':<28} {clp(ut['clp']):>14}  ({ut['pct']}%)  {pct_badge(ut['pct'])}",
+            SEP_THIN,
+            f"{'ROAS Meta:':<28} {mkt['meta_roas']}x  {roas_badge(mkt['meta_roas'])}",
+            f"{'ROAS efectivo:':<28} {met['roas_efectivo']}x  {pct_badge(met['roas_efectivo'] * 10 - 5)}",
+            f"{'Pedidos:':<28} {met['cantidad_pedidos']}",
+            f"{'Ticket prom. neto:':<28} {clp(met['ticket_promedio_neto'])}",
+            "",
+        ]
+
+        # Advertencias de datos incompletos
+        skus_sin_costo = pl_data["meta"].get("skus_sin_costo", [])
+        pedidos_promedio = pl_data["meta"].get("pedidos_con_tarifa_promedio", 0)
+        if skus_sin_costo:
+            L.append(f"⚠️  SKUs sin costo en products.json: {', '.join(skus_sin_costo)}")
+        if pedidos_promedio:
+            L.append(f"⚠️  {pedidos_promedio} pedidos usaron tarifa promedio BluExpress (comuna no encontrada)")
+        if skus_sin_costo or pedidos_promedio:
+            L.append("")
+
     # ── Alertas ──
-    L += ["⚠️  ALERTAS", SEP_THIN]
+    L += ["⚠️  ALERTAS META ADS", SEP_THIN]
     alertas = []
     if roas_global < ROAS_MINIMO:
         alertas.append(f"🔴 ROAS global {roas_global}x bajo el umbral mínimo ({ROAS_MINIMO}x)")

@@ -9,9 +9,11 @@ os.environ["REPORT_MODE"] = "monthly"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PIPELINE = [
-    ("fetch_meta_ads.py",  "Descarga datos Meta Ads"),
-    ("generate_report.py", "Genera reporte texto"),
-    ("send_report.py",     "Envía email"),
+    ("fetch_meta_ads.py",       "Descarga datos Meta Ads"),
+    ("fetch_shopify_orders.py", "Descarga pedidos Shopify"),
+    ("calculate_pl.py",         "Calcula P&L operacional"),
+    ("generate_report.py",      "Genera reporte texto"),
+    ("send_report.py",          "Envía email"),
 ]
 
 
