@@ -131,7 +131,7 @@
   },
   {
     "sku": "1135",
-    "nombre": "Alfombra Gateo pequeña",
+    "nombre": "Alfombra Estimuladora Gateo",
     "costo_neto": 2521,
     "dimensiones_cm": {"ancho": 14, "alto": 18, "largo": 8},
     "peso_gramos": 300,
@@ -297,7 +297,8 @@
     "peso_gramos": null,
     "keywords": ["piscina", "pileta"],
     "canal_ml": true,
-    "canal_shopify": true
+    "canal_shopify": true,
+    "data_pendiente": ["dimensiones_cm", "peso_gramos"]
   },
   {
     "sku": "1114",
@@ -312,71 +313,88 @@
   {
     "sku": "3010",
     "nombre": "Pack Didáctico",
-    "costo_neto": 9244,
-    "dimensiones_cm": null,
-    "peso_gramos": null,
+    "costo_neto": 11345,
+    "dimensiones_cm": {"ancho": 54.5, "alto": 25, "largo": 10},
+    "peso_gramos": 1700,
     "keywords": ["pack didactico"],
     "canal_ml": true,
-    "canal_shopify": true
+    "canal_shopify": true,
+    "es_pack": true,
+    "componentes": ["1210", "1230"]
   },
   {
     "sku": "3011",
-    "nombre": "Pack Didáctico 2",
-    "costo_neto": 9244,
-    "dimensiones_cm": null,
-    "peso_gramos": null,
-    "keywords": [],
+    "nombre": "Pack Didáctico 1",
+    "costo_neto": 10925,
+    "dimensiones_cm": {"ancho": 51.5, "alto": 24, "largo": 10},
+    "peso_gramos": 1000,
+    "keywords": ["pack didactico 1"],
     "canal_ml": true,
-    "canal_shopify": true
+    "canal_shopify": true,
+    "es_pack": true,
+    "componentes": ["1230", "1140"]
   },
   {
     "sku": "3012",
-    "nombre": "Pack Didáctico 3",
-    "costo_neto": 9664,
+    "nombre": "Pack Didáctico 2",
+    "costo_neto": null,
     "dimensiones_cm": null,
     "peso_gramos": null,
-    "keywords": [],
+    "keywords": ["pack didactico 2"],
     "canal_ml": true,
-    "canal_shopify": true
+    "canal_shopify": true,
+    "es_pack": true,
+    "componentes": null,
+    "data_pendiente": ["composicion_pack", "costo_neto", "dimensiones_cm", "peso_gramos"]
   },
   {
     "sku": "3013",
     "nombre": "Pack Marcadores + Curso + Libro",
-    "costo_neto": 14286,
+    "costo_neto": null,
     "dimensiones_cm": null,
     "peso_gramos": null,
     "keywords": ["pack marcadores"],
     "canal_ml": true,
-    "canal_shopify": true
+    "canal_shopify": true,
+    "es_pack": true,
+    "componentes": ["1150", "1141", "1114", "LIBRO_CURSO"],
+    "data_pendiente": ["costo_libro_curso", "dimensiones_libro_curso", "peso_libro_curso"]
   },
   {
     "sku": "3014",
     "nombre": "Pack Estimulador Bebés",
-    "costo_neto": 6723,
-    "dimensiones_cm": null,
-    "peso_gramos": null,
+    "costo_neto": 5667,
+    "dimensiones_cm": {"ancho": 27, "alto": 18, "largo": 8},
+    "peso_gramos": 500,
     "keywords": ["pack estimulador"],
     "canal_ml": true,
-    "canal_shopify": true
+    "canal_shopify": true,
+    "es_pack": true,
+    "componentes": ["1135", "1137"]
   },
   {
     "sku": "3015",
     "nombre": "Pack Marcadores XL",
-    "costo_neto": 17647,
+    "costo_neto": null,
     "dimensiones_cm": null,
     "peso_gramos": null,
     "keywords": ["pack marcadores xl"],
     "canal_ml": true,
-    "canal_shopify": true
+    "canal_shopify": true,
+    "es_pack": true,
+    "componentes": ["1150", "1142", "1114", "LIBRO_CURSO"],
+    "data_pendiente": ["costo_libro_curso", "dimensiones_libro_curso", "peso_libro_curso"]
   },
   {
     "sku": "11502",
     "nombre": "Pack 2 Set Marcadores Borde Color",
-    "costo_neto": 9664,
-    "dimensiones_cm": null,
-    "peso_gramos": null,
+    "costo_neto": 6722,
+    "dimensiones_cm": {"ancho": 42, "alto": 15.5, "largo": 32},
+    "peso_gramos": 600,
     "keywords": ["pack borde color"],
     "canal_ml": true,
-    "canal_shopify": true
+    "canal_shopify": true,
+    "es_pack": true,
+    "componentes": ["1150", "1150"]
   }
 ]

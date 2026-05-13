@@ -4,12 +4,30 @@
   "factor_volumetrico": 4000,
   "origen": "Santiago",
   "nota_devengado": "Pago del mes N+1 corresponde a envíos del mes N",
+  "logica_dimensiones_pack": "ancho=suma, alto=max, largo=max",
+  "costo_promedio_real_neto": 3969,
   "costo_promedio_estimado_neto": 3671,
+  "nota_costo_promedio": "Real calculado de factura Feb-Mar 2026 (96 envíos). Estimado es referencia anterior.",
   "ecourrier_flex_neto": 3200,
   "fulfillment_por_pedido_neto": 1000,
   "tarifas_fulfillment": [
     {"desde": 0, "hasta": 400, "precio_neto": 1000},
     {"desde": 401, "hasta": 600, "precio_neto": 735},
     {"desde": 601, "hasta": 99999, "precio_neto": 600}
-  ]
+  ],
+  "tarifario_home_delivery": {
+    "vigencia_propuesta": "2024-11-19",
+    "nota": "Tarifas sin IVA. Precio por peso cobrado = max(peso_fisico_kg, peso_volumetrico_kg). Comunas BORDER tienen sobrecargo de $10.000 ya incluido.",
+    "quiebres_kg": ["0-0.5", "0.5-1.5", "1.5-3", "3-6", "6-10", "10-16", "16-25", "25-50", ">50"],
+    "muestra_zonas_rm": {
+      "SANTIAGO_METRO": [2300, 2300, 2300, 2300, 3390, 3990, 4690, null, null],
+      "COLINA": [2530, 2530, 2530, 2530, 3720, 4380, 5150, null, null],
+      "LO_BARNECHEA": [2300, 2300, 2300, 2300, 3390, 3990, 4690, null, null]
+    },
+    "nota_tarifario_completo": "Tabla completa de 346 comunas disponible en XLSX. Importar a tabla blueexpress_tarifario en Postgres.",
+    "diferencia_factura_vs_tarifa": {
+      "descripcion": "Las facturas Feb-Mar 2026 muestran cobros ~100-135 CLP sobre la tarifa base para destinos RM. Ajuste por actualización tarifaria post-Nov 2024.",
+      "diff_promedio_clp": 121
+    }
+  }
 }
