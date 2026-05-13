@@ -1,0 +1,15 @@
+{
+  "proveedor": "BluExpress",
+  "rut": "96.938.840-5",
+  "factor_volumetrico": 4000,
+  "origen": "Santiago",
+  "nota_devengado": "Pago del mes N+1 corresponde a envíos del mes N",
+  "costo_promedio_estimado_neto": 3671,
+  "ecourrier_flex_neto": 3200,
+  "fulfillment_por_pedido_neto": 1000,
+  "tarifas_fulfillment": [
+    {"desde": 0, "hasta": 400, "precio_neto": 1000},
+    {"desde": 401, "hasta": 600, "precio_neto": 735},
+    {"desde": 601, "hasta": 99999, "precio_neto": 600}
+  ]
+}

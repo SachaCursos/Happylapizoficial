@@ -1,0 +1,382 @@
+[
+  {
+    "sku": "1140",
+    "nombre": "Libro Educativo 3D",
+    "costo_neto": 4622,
+    "dimensiones_cm": {"ancho": 28, "alto": 23, "largo": 5},
+    "peso_gramos": 300,
+    "keywords": ["libro", "estuche educativo", "tepasoeldato", "educativo", "viajes"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1190",
+    "nombre": "Mochila Educativa Princesas",
+    "costo_neto": 5042,
+    "dimensiones_cm": {"ancho": 28, "alto": 25, "largo": 5},
+    "peso_gramos": 400,
+    "keywords": ["mochila", "princesas"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1210",
+    "nombre": "Pack Mi Primer Taladro",
+    "costo_neto": 5042,
+    "dimensiones_cm": {"ancho": 31, "alto": 25, "largo": 7},
+    "peso_gramos": 1000,
+    "keywords": ["taladro", "fernanda", "melissa", "primer taladro"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "2121",
+    "nombre": "Extra Taladro Eléctrico",
+    "costo_neto": 2521,
+    "dimensiones_cm": {"ancho": 15, "alto": 15, "largo": 5},
+    "peso_gramos": 300,
+    "keywords": ["extra taladro"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1230",
+    "nombre": "Pista de Autos Didáctica",
+    "costo_neto": 6303,
+    "dimensiones_cm": {"ancho": 23.5, "alto": 24, "largo": 10},
+    "peso_gramos": 700,
+    "keywords": ["pista", "autos", "no necesita pilas", "aman esta pista"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1510",
+    "nombre": "Piedras Musicales Luminosas",
+    "costo_neto": 15630,
+    "dimensiones_cm": {"ancho": 30, "alto": 21, "largo": 19},
+    "peso_gramos": null,
+    "keywords": ["piedras", "musicales", "luminosas", "black friday"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1520",
+    "nombre": "Monitor para Vehículos",
+    "costo_neto": 11597,
+    "dimensiones_cm": {"ancho": 18, "alto": 14, "largo": 7},
+    "peso_gramos": 500,
+    "keywords": ["monitor"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1530",
+    "nombre": "Juego Construcción Magnético",
+    "costo_neto": 15210,
+    "dimensiones_cm": {"ancho": 39, "alto": 32, "largo": 9},
+    "peso_gramos": 2500,
+    "keywords": ["construccion", "magnetico", "construcción", "magnético"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1150",
+    "nombre": "Marcadores Borde Color 12 colores",
+    "costo_neto": 3361,
+    "dimensiones_cm": {"ancho": 21, "alto": 15.5, "largo": 32},
+    "peso_gramos": 300,
+    "keywords": ["marcadores", "borde color", "metalicos"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1141",
+    "nombre": "60 Marcadores Doble Punta",
+    "costo_neto": 7563,
+    "dimensiones_cm": {"ancho": 17, "alto": 26, "largo": 5},
+    "peso_gramos": 700,
+    "keywords": ["60 marcadores", "60 colores", "lettering"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1142",
+    "nombre": "120 Marcadores Doble Punta",
+    "costo_neto": 11849,
+    "dimensiones_cm": {"ancho": 20, "alto": 27, "largo": 7},
+    "peso_gramos": 1200,
+    "keywords": ["120 marcadores", "120 colores"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1260",
+    "nombre": "Antigravity Car Rojo",
+    "costo_neto": 5882,
+    "dimensiones_cm": {"ancho": 17, "alto": 24, "largo": 7},
+    "peso_gramos": 300,
+    "keywords": ["antigravity", "anti gravity"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1261",
+    "nombre": "Antigravity Car Azul",
+    "costo_neto": 5882,
+    "dimensiones_cm": {"ancho": 17, "alto": 24, "largo": 7},
+    "peso_gramos": 300,
+    "keywords": ["antigravity azul"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1135",
+    "nombre": "Alfombra Gateo pequeña",
+    "costo_neto": 2521,
+    "dimensiones_cm": {"ancho": 14, "alto": 18, "largo": 8},
+    "peso_gramos": 300,
+    "keywords": ["alfombra", "gateo"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1135b",
+    "nombre": "Alfombra Gateo 1 metro",
+    "costo_neto": 2521,
+    "dimensiones_cm": {"ancho": 21, "alto": 21, "largo": 5},
+    "peso_gramos": 600,
+    "keywords": ["alfombra 1 metro"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1139",
+    "nombre": "Kit Caligrafía 4 Temáticas",
+    "costo_neto": 3361,
+    "dimensiones_cm": {"ancho": 15, "alto": 19, "largo": 3},
+    "peso_gramos": 300,
+    "keywords": ["caligrafia", "kit magico"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1137",
+    "nombre": "Cascabel Sensorial Bebés",
+    "costo_neto": 3146,
+    "dimensiones_cm": {"ancho": 13, "alto": 14, "largo": 8},
+    "peso_gramos": 200,
+    "keywords": ["cascabel", "sensorial"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "DK01",
+    "nombre": "Ducha Koala",
+    "costo_neto": 5882,
+    "dimensiones_cm": {"ancho": 26, "alto": 24, "largo": 9.5},
+    "peso_gramos": 500,
+    "keywords": ["ducha", "koala"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "CD01",
+    "nombre": "Cubo Didáctico Bebés",
+    "costo_neto": 2521,
+    "dimensiones_cm": {"ancho": 12, "alto": 12, "largo": 12},
+    "peso_gramos": 200,
+    "keywords": ["cubo", "didactico"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1340",
+    "nombre": "Kit de Aseo XL",
+    "costo_neto": 16807,
+    "dimensiones_cm": {"ancho": 50, "alto": 36, "largo": 14},
+    "peso_gramos": 1800,
+    "keywords": ["aseo", "kit aseo"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1330",
+    "nombre": "Maleta Cocina XL",
+    "costo_neto": 14034,
+    "dimensiones_cm": {"ancho": 26, "alto": 38, "largo": 20},
+    "peso_gramos": 1900,
+    "keywords": ["maleta cocina"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1320",
+    "nombre": "Maleta Hospital XL",
+    "costo_neto": 14034,
+    "dimensiones_cm": {"ancho": 26, "alto": 38, "largo": 20},
+    "peso_gramos": 1800,
+    "keywords": ["maleta hospital"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1111",
+    "nombre": "Acuarelas Metalizadas",
+    "costo_neto": 3361,
+    "dimensiones_cm": {"ancho": 7, "alto": 13, "largo": 2},
+    "peso_gramos": 100,
+    "keywords": ["acuarelas"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1112",
+    "nombre": "Plumones Acrílico 5mm",
+    "costo_neto": 3361,
+    "dimensiones_cm": {"ancho": 14, "alto": 14, "largo": 2},
+    "peso_gramos": 200,
+    "keywords": ["plumones acrilico"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1125",
+    "nombre": "Kit Pintura Mármol",
+    "costo_neto": 3361,
+    "dimensiones_cm": {"ancho": 29, "alto": 22, "largo": 6},
+    "peso_gramos": 400,
+    "keywords": ["pintura marmol", "kit marmol"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1126",
+    "nombre": "Estuche Oso Expandible",
+    "costo_neto": 3361,
+    "dimensiones_cm": {"ancho": 13, "alto": 18, "largo": 2},
+    "peso_gramos": 5,
+    "keywords": ["estuche oso"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "16000",
+    "nombre": "Dibuja Letras",
+    "costo_neto": 4202,
+    "dimensiones_cm": {"ancho": 16, "alto": 20, "largo": 1},
+    "peso_gramos": 100,
+    "keywords": ["dibuja letras", "sara art"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "16200",
+    "nombre": "Happy Spinners",
+    "costo_neto": 3361,
+    "dimensiones_cm": {"ancho": 15, "alto": 10.5, "largo": 9},
+    "peso_gramos": 100,
+    "keywords": ["spinner", "spinners"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "16100",
+    "nombre": "Cangrejo Electrónico",
+    "costo_neto": 7563,
+    "dimensiones_cm": {"ancho": 22, "alto": 13, "largo": 10},
+    "peso_gramos": 300,
+    "keywords": ["cangrejo"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1116",
+    "nombre": "Piscina 170cm",
+    "costo_neto": 3361,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": ["piscina", "pileta"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "1114",
+    "nombre": "Curso Online Sara Art",
+    "costo_neto": 0,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": ["curso online", "curso sara"],
+    "canal_ml": false,
+    "canal_shopify": true
+  },
+  {
+    "sku": "3010",
+    "nombre": "Pack Didáctico",
+    "costo_neto": 9244,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": ["pack didactico"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "3011",
+    "nombre": "Pack Didáctico 2",
+    "costo_neto": 9244,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": [],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "3012",
+    "nombre": "Pack Didáctico 3",
+    "costo_neto": 9664,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": [],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "3013",
+    "nombre": "Pack Marcadores + Curso + Libro",
+    "costo_neto": 14286,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": ["pack marcadores"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "3014",
+    "nombre": "Pack Estimulador Bebés",
+    "costo_neto": 6723,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": ["pack estimulador"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "3015",
+    "nombre": "Pack Marcadores XL",
+    "costo_neto": 17647,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": ["pack marcadores xl"],
+    "canal_ml": true,
+    "canal_shopify": true
+  },
+  {
+    "sku": "11502",
+    "nombre": "Pack 2 Set Marcadores Borde Color",
+    "costo_neto": 9664,
+    "dimensiones_cm": null,
+    "peso_gramos": null,
+    "keywords": ["pack borde color"],
+    "canal_ml": true,
+    "canal_shopify": true
+  }
+]
