@@ -7,11 +7,12 @@ Uso:
 Ejecutar una sola vez cuando se actualice el tarifario.
 El archivo generado queda en data/blueexpress_tariff.json y se commitea al repo.
 
-Estructura esperada del XLSX (Nov 2024):
-  - Fila 1-5: encabezados / metadata
-  - Fila 6+:  col[0]=región, col[1]=provincia, col[2]=comuna, col[3]=código_posta,
-              col[4..N]=tarifas por tramo de peso (en CLP con IVA)
-  - Fila de encabezado de pesos: la fila que contiene "0.5" o "0,5" en col[4]
+Estructura del XLSX (Nov 2024):
+  Sheet: "COMUNAS - HOME DELIVERY"
+  Fila 5: encabezado — col C=REGION, D=POSTA, E=COMUNA DESTINO, F-N=tramos de peso
+  Fila 6+: datos por comuna
+  Tramos: 0-0.5 | 0.5-1.5 | 1.5-3 | 3-6 | 6-10 | 10-16 | 16-25 | 25-50* | >50*
+  Nota: tramos 25-50 y >50 son tarifa por kg adicional (cobro variable).
 """
 
 import json
@@ -26,95 +27,75 @@ OUTPUT_FILE = os.path.join(BASE_DIR, "data", "blueexpress_tariff.json")
 
 FACTOR_VOLUMETRICO = 4000  # cm³/kg
 IVA = 1.19
-
-
-def find_header_row(ws):
-    """Encuentra la fila con los tramos de peso (busca la celda con valor numérico ~0.5 en col 5)."""
-    for i, row in enumerate(ws.iter_rows(min_row=1, max_row=20, values_only=True), start=1):
-        if row and len(row) > 4:
-            val = row[4]
-            if val is not None:
-                try:
-                    if abs(float(str(val).replace(",", ".")) - 0.5) < 0.01:
-                        return i
-                except (ValueError, TypeError):
-                    pass
-    return None
-
-
-def parse_float(val):
-    if val is None:
-        return None
-    try:
-        return float(str(val).replace(",", ".").replace("$", "").replace(".", "", str(val).count(".") - 1).strip())
-    except (ValueError, TypeError):
-        return None
-
-
-def parse_price(val):
-    """Parsea precios como 1.234 o 1234 → float."""
-    if val is None:
-        return None
-    s = str(val).strip().replace("$", "").replace(" ", "")
-    # Chilean format uses dots as thousands separator
-    if s.count(".") >= 1:
-        # Could be thousands separator — remove dots if no decimal part looks like decimals
-        parts = s.split(".")
-        if all(len(p) == 3 for p in parts[1:]):
-            s = s.replace(".", "")
-    try:
-        return float(s)
-    except ValueError:
-        return None
+SHEET_NAME = "COMUNAS - HOME DELIVERY"
+HEADER_ROW = 5   # fila con nombres de columnas
+DATA_START_ROW = 6
 
 
 def build_tariff(xlsx_path):
     wb = openpyxl.load_workbook(xlsx_path, data_only=True)
-    ws = wb.active
 
-    header_row_idx = find_header_row(ws)
-    if header_row_idx is None:
-        print("ERROR: No se encontró la fila de tramos de peso.", file=sys.stderr)
+    if SHEET_NAME not in wb.sheetnames:
+        print(f"ERROR: No se encontró la hoja '{SHEET_NAME}'.", file=sys.stderr)
+        print(f"Hojas disponibles: {wb.sheetnames}", file=sys.stderr)
         sys.exit(1)
 
-    # Read weight bands from header row
-    rows = list(ws.iter_rows(values_only=True))
-    header_row = rows[header_row_idx - 1]
+    ws = wb[SHEET_NAME]
+    rows = list(ws.iter_rows(min_row=1, values_only=True))
+
+    # Leer encabezado (fila 5, índice 4)
+    header = rows[HEADER_ROW - 1]
+    # col[2]=REGION, col[3]=POSTA, col[4]=COMUNA, col[5..]=tramos
+    # Solo incluir celdas que parecen tramos de peso (contienen dígitos y guión o >)
+    weight_labels = [
+        str(h) for h in header[5:]
+        if h is not None and any(c.isdigit() for c in str(h))
+        and ("-" in str(h) or ">" in str(h))
+    ]
+    # Extraer límite superior de cada tramo para comparación numérica
+    # Ej: "0 - 0.5" → 0.5, "0.5 - 1.5" → 1.5, "> 50 *" → 9999
     weight_bands = []
-    for cell in header_row[4:]:
-        if cell is None:
-            break
-        try:
-            weight_bands.append(float(str(cell).replace(",", ".")))
-        except (ValueError, TypeError):
-            break
+    for label in weight_labels:
+        label_clean = label.replace("*", "").strip()
+        if label_clean.startswith(">"):
+            weight_bands.append(9999.0)
+        else:
+            parts = label_clean.split("-")
+            try:
+                weight_bands.append(float(parts[-1].strip()))
+            except (ValueError, IndexError):
+                weight_bands.append(9999.0)
 
-    print(f"Tramos de peso encontrados: {weight_bands}")
+    print(f"Tramos: {weight_labels}")
+    print(f"Límites superiores: {weight_bands}")
 
-    # Parse communes
     comunas = {}
-    for row in rows[header_row_idx:]:
-        if not row or row[2] is None:
+    for row in rows[DATA_START_ROW - 1:]:
+        # col indices: 2=region, 3=posta, 4=comuna, 5..=tarifas
+        if not row or row[4] is None:
             continue
 
-        comuna_name = str(row[2]).strip().upper()
-        if not comuna_name or comuna_name in ("COMUNA", ""):
+        comuna_name = str(row[4]).strip().upper()
+        if not comuna_name or comuna_name in ("COMUNA DESTINO", ""):
             continue
 
         posta = str(row[3]).strip() if row[3] is not None else ""
+        region = str(row[2]).strip() if row[2] is not None else ""
 
         tarifas_bruto = []
-        for cell in row[4: 4 + len(weight_bands)]:
-            price = parse_price(cell)
-            tarifas_bruto.append(price)
+        for cell in row[5: 5 + len(weight_bands)]:
+            try:
+                tarifas_bruto.append(float(cell) if cell is not None else None)
+            except (ValueError, TypeError):
+                tarifas_bruto.append(None)
 
-        # Convert bruto → neto (÷ IVA)
         tarifas_neto = [
             round(p / IVA, 0) if p is not None else None
             for p in tarifas_bruto
         ]
 
         comunas[comuna_name] = {
+            "region": region,
             "posta": posta,
             "tarifas_neto": tarifas_neto,
         }
@@ -123,8 +104,13 @@ def build_tariff(xlsx_path):
         "fuente": "BluExpress propuesta nov-2024",
         "factor_volumetrico": FACTOR_VOLUMETRICO,
         "iva_aplicado": IVA,
-        "nota": "tarifas_neto en CLP sin IVA. Indexar por peso_facturado_kg (max(real, volumetrico)).",
-        "tramos_kg": weight_bands,
+        "nota": (
+            "tarifas_neto en CLP sin IVA. "
+            "Tramos 0-16 kg: tarifa plana por peso cobrado. "
+            "Tramos 25-50 y >50: tarifa por kg (cobro variable)."
+        ),
+        "tramos_labels": weight_labels,
+        "tramos_kg_max": weight_bands,
         "comunas": comunas,
     }
 

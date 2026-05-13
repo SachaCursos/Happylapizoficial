@@ -1,0 +1,5250 @@
+{
+  "fuente": "BluExpress propuesta nov-2024",
+  "factor_volumetrico": 4000,
+  "iva_aplicado": 1.19,
+  "nota": "tarifas_neto en CLP sin IVA. Tramos 0-16 kg: tarifa plana por peso cobrado. Tramos 25-50 y >50: tarifa por kg (cobro variable).",
+  "tramos_labels": [
+    "0 - 0.5",
+    "0.5 - 1.5",
+    "1.5 - 3",
+    "3 - 6",
+    "6 - 10",
+    "10 - 16",
+    "16 - 25",
+    "25 - 50 *",
+    "> 50 *"
+  ],
+  "tramos_kg_max": [
+    0.5,
+    1.5,
+    3.0,
+    6.0,
+    10.0,
+    16.0,
+    25.0,
+    50.0,
+    9999.0
+  ],
+  "comunas": {
+    "SANTIAGO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "SCL",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "RECOLETA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "RLT",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "INDEPENDENCIA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "IDP",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "QUINTA NORMAL": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "QTN",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "MAIPU": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "MAI",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "PUDAHUEL": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "PUD",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "RENCA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "REN",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "QUILICURA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "QLC",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "CONCHALI": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "CNH",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LO PRADO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LPR",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "CERRO NAVIA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "CNV",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "ESTACION CENTRAL": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "ECE",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "HUECHURABA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "HRB",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "CERRILLOS": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "RRI",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "SAN PEDRO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "SPO",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "PROVIDENCIA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "PRO",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "NUNOA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "NNA",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LAS CONDES": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LCD",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LA FLORIDA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LFD",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LA REINA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LRN",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "MACUL": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "MAC",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "PENALOLEN": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "PNL",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "VITACURA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "VTC",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LO BARNECHEA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LBR",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "SAN MIGUEL": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "SMG",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LA CISTERNA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LCN",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LA GRANJA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LGJ",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "SAN RAMON": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "SRN",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LA PINTANA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LPT",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "PEDRO AGUIRRE CERDA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "PAC",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "SAN JOAQUIN": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "SJQ",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "LO ESPEJO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LEP",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "EL BOSQUE": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "EBO",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "PUENTE ALTO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "PAL",
+      "tarifas_neto": [
+        1933.0,
+        1933.0,
+        1933.0,
+        1933.0,
+        2849.0,
+        3353.0,
+        3941.0,
+        225.0,
+        155.0
+      ]
+    },
+    "SAN BERNARDO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "SBD",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "ALHUE": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "ALH",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "BUIN": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "ZBU",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "CALERA DE TANGO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "CDT",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "COLINA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "COL",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "CURACAVI": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "CVI",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "EL MONTE": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "ZTE",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "ISLA DE MAIPO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "IDM",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "LAMPA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "LSG",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "MARIA PINTO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "MPO",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "MELIPILLA": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "ZMP",
+      "tarifas_neto": [
+        2605.0,
+        2773.0,
+        3198.0,
+        3609.0,
+        4576.0,
+        5444.0,
+        6237.0,
+        255.0,
+        191.0
+      ]
+    },
+    "PADRE HURTADO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "PHT",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "PAINE": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "ZPN",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "PENAFLOR": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "PFL",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "PIRQUE": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "PIR",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "SAN JOSE DE MAIPO": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "SJS",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "TALAGANTE": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "TNT",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "TILTIL": {
+      "region": "METROPOLITANA (XIII)",
+      "posta": "TIL",
+      "tarifas_neto": [
+        2126.0,
+        2126.0,
+        2126.0,
+        2126.0,
+        3134.0,
+        3688.0,
+        4335.0,
+        248.0,
+        171.0
+      ]
+    },
+    "COPIAPO": {
+      "region": "ATACAMA (III)",
+      "posta": "CPO",
+      "tarifas_neto": [
+        3255.0,
+        3583.0,
+        4063.0,
+        4378.0,
+        5565.0,
+        6997.0,
+        8104.0,
+        337.0,
+        249.0
+      ]
+    },
+    "ALTO DEL CARMEN": {
+      "region": "ATACAMA (III)",
+      "posta": "ADC",
+      "tarifas_neto": [
+        3358.0,
+        3696.0,
+        4191.0,
+        4516.0,
+        5654.0,
+        7111.0,
+        8240.0,
+        364.0,
+        268.0
+      ]
+    },
+    "HUASCO": {
+      "region": "ATACAMA (III)",
+      "posta": "HCO",
+      "tarifas_neto": [
+        3358.0,
+        3696.0,
+        4191.0,
+        4516.0,
+        5654.0,
+        7111.0,
+        8240.0,
+        364.0,
+        268.0
+      ]
+    },
+    "CALDERA": {
+      "region": "ATACAMA (III)",
+      "posta": "CLR",
+      "tarifas_neto": [
+        3581.0,
+        3942.0,
+        4469.0,
+        4816.0,
+        6121.0,
+        7697.0,
+        8915.0,
+        371.0,
+        274.0
+      ]
+    },
+    "CHANARAL": {
+      "region": "ATACAMA (III)",
+      "posta": "CHN",
+      "tarifas_neto": [
+        4883.0,
+        5375.0,
+        6095.0,
+        6567.0,
+        8347.0,
+        10496.0,
+        12156.0,
+        505.0,
+        373.0
+      ]
+    },
+    "DIEGO DE ALMAGRO": {
+      "region": "ATACAMA (III)",
+      "posta": "DAG",
+      "tarifas_neto": [
+        4883.0,
+        5375.0,
+        6095.0,
+        6567.0,
+        8347.0,
+        10496.0,
+        12156.0,
+        505.0,
+        373.0
+      ]
+    },
+    "FREIRINA": {
+      "region": "ATACAMA (III)",
+      "posta": "FRN",
+      "tarifas_neto": [
+        4579.0,
+        5039.0,
+        5715.0,
+        6159.0,
+        7711.0,
+        9697.0,
+        11236.0,
+        497.0,
+        366.0
+      ]
+    },
+    "TIERRA AMARILLA": {
+      "region": "ATACAMA (III)",
+      "posta": "TRM",
+      "tarifas_neto": [
+        3581.0,
+        3942.0,
+        4469.0,
+        4816.0,
+        6121.0,
+        7697.0,
+        8915.0,
+        371.0,
+        274.0
+      ]
+    },
+    "VALLENAR": {
+      "region": "ATACAMA (III)",
+      "posta": "VAL",
+      "tarifas_neto": [
+        3053.0,
+        3360.0,
+        3810.0,
+        4106.0,
+        5140.0,
+        6465.0,
+        7491.0,
+        331.0,
+        244.0
+      ]
+    },
+    "COQUIMBO": {
+      "region": "COQUIMBO (IV)",
+      "posta": "COQ",
+      "tarifas_neto": [
+        3053.0,
+        3360.0,
+        3810.0,
+        4106.0,
+        5140.0,
+        6465.0,
+        7491.0,
+        331.0,
+        244.0
+      ]
+    },
+    "ANDACOLLO": {
+      "region": "COQUIMBO (IV)",
+      "posta": "ACO",
+      "tarifas_neto": [
+        4579.0,
+        5039.0,
+        5715.0,
+        6159.0,
+        7711.0,
+        9697.0,
+        11236.0,
+        497.0,
+        366.0
+      ]
+    },
+    "CANELA": {
+      "region": "COQUIMBO (IV)",
+      "posta": "CNE",
+      "tarifas_neto": [
+        4002.0,
+        4234.0,
+        5000.0,
+        5541.0,
+        6991.0,
+        8844.0,
+        10141.0,
+        417.0,
+        316.0
+      ]
+    },
+    "COMBARBALA": {
+      "region": "COQUIMBO (IV)",
+      "posta": "COB",
+      "tarifas_neto": [
+        4579.0,
+        5039.0,
+        5715.0,
+        6159.0,
+        7711.0,
+        9697.0,
+        11236.0,
+        497.0,
+        366.0
+      ]
+    },
+    "ILLAPEL": {
+      "region": "COQUIMBO (IV)",
+      "posta": "ILL",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "LA SERENA": {
+      "region": "COQUIMBO (IV)",
+      "posta": "LSC",
+      "tarifas_neto": [
+        3053.0,
+        3360.0,
+        3810.0,
+        4106.0,
+        5140.0,
+        6465.0,
+        7491.0,
+        331.0,
+        244.0
+      ]
+    },
+    "LA HIGUERA": {
+      "region": "COQUIMBO (IV)",
+      "posta": "LHC",
+      "tarifas_neto": [
+        3358.0,
+        3696.0,
+        4191.0,
+        4516.0,
+        5654.0,
+        7111.0,
+        8240.0,
+        364.0,
+        268.0
+      ]
+    },
+    "LOS VILOS": {
+      "region": "COQUIMBO (IV)",
+      "posta": "LVL",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "MONTE PATRIA": {
+      "region": "COQUIMBO (IV)",
+      "posta": "MPC",
+      "tarifas_neto": [
+        4579.0,
+        5039.0,
+        5715.0,
+        6159.0,
+        7711.0,
+        9697.0,
+        11236.0,
+        497.0,
+        366.0
+      ]
+    },
+    "OVALLE": {
+      "region": "COQUIMBO (IV)",
+      "posta": "OVL",
+      "tarifas_neto": [
+        3053.0,
+        3360.0,
+        3810.0,
+        4106.0,
+        5140.0,
+        6465.0,
+        7491.0,
+        331.0,
+        244.0
+      ]
+    },
+    "PAIGUANO": {
+      "region": "COQUIMBO (IV)",
+      "posta": "PHO",
+      "tarifas_neto": [
+        4579.0,
+        5039.0,
+        5715.0,
+        6159.0,
+        7711.0,
+        9697.0,
+        11236.0,
+        497.0,
+        366.0
+      ]
+    },
+    "PUNITAQUI": {
+      "region": "COQUIMBO (IV)",
+      "posta": "PTQ",
+      "tarifas_neto": [
+        3358.0,
+        3696.0,
+        4191.0,
+        4516.0,
+        5654.0,
+        7111.0,
+        8240.0,
+        364.0,
+        268.0
+      ]
+    },
+    "RIO HURTADO": {
+      "region": "COQUIMBO (IV)",
+      "posta": "RHU",
+      "tarifas_neto": [
+        4579.0,
+        5039.0,
+        5715.0,
+        6159.0,
+        7711.0,
+        9697.0,
+        11236.0,
+        497.0,
+        366.0
+      ]
+    },
+    "SALAMANCA": {
+      "region": "COQUIMBO (IV)",
+      "posta": "SCA",
+      "tarifas_neto": [
+        4002.0,
+        4234.0,
+        5000.0,
+        5541.0,
+        6991.0,
+        8844.0,
+        10141.0,
+        417.0,
+        316.0
+      ]
+    },
+    "VICUNA": {
+      "region": "COQUIMBO (IV)",
+      "posta": "VCA",
+      "tarifas_neto": [
+        3358.0,
+        3696.0,
+        4191.0,
+        4516.0,
+        5654.0,
+        7111.0,
+        8240.0,
+        364.0,
+        268.0
+      ]
+    },
+    "VINA DEL MAR": {
+      "region": "VALPARAISO (V)",
+      "posta": "KNA",
+      "tarifas_neto": [
+        2605.0,
+        2773.0,
+        3198.0,
+        3609.0,
+        4576.0,
+        5444.0,
+        6237.0,
+        255.0,
+        191.0
+      ]
+    },
+    "ALGARROBO": {
+      "region": "VALPARAISO (V)",
+      "posta": "ABO",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "CABILDO": {
+      "region": "VALPARAISO (V)",
+      "posta": "CDO",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "CALLE LARGA": {
+      "region": "VALPARAISO (V)",
+      "posta": "CLG",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "CARTAGENA": {
+      "region": "VALPARAISO (V)",
+      "posta": "CRT",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "CASABLANCA": {
+      "region": "VALPARAISO (V)",
+      "posta": "CBC",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "CATEMU": {
+      "region": "VALPARAISO (V)",
+      "posta": "CAT",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "CONCON": {
+      "region": "VALPARAISO (V)",
+      "posta": "CON",
+      "tarifas_neto": [
+        2605.0,
+        2773.0,
+        3198.0,
+        3609.0,
+        4576.0,
+        5444.0,
+        6237.0,
+        255.0,
+        191.0
+      ]
+    },
+    "EL QUISCO": {
+      "region": "VALPARAISO (V)",
+      "posta": "EQO",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "EL TABO": {
+      "region": "VALPARAISO (V)",
+      "posta": "ETB",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "HIJUELAS": {
+      "region": "VALPARAISO (V)",
+      "posta": "HJS",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "JUAN FERNANDEZ": {
+      "region": "VALPARAISO (V)",
+      "posta": "JFZ",
+      "tarifas_neto": [
+        11303.0,
+        11303.0,
+        11303.0,
+        11303.0,
+        12676.0,
+        13433.0,
+        14315.0,
+        338.0,
+        233.0
+      ]
+    },
+    "ISLA DE PASCUA": {
+      "region": "VALPARAISO (V)",
+      "posta": "IPC",
+      "tarifas_neto": [
+        11303.0,
+        11303.0,
+        11303.0,
+        11303.0,
+        12676.0,
+        13433.0,
+        14315.0,
+        338.0,
+        233.0
+      ]
+    },
+    "CALERA": {
+      "region": "VALPARAISO (V)",
+      "posta": "ZLC",
+      "tarifas_neto": [
+        2668.0,
+        2823.0,
+        3334.0,
+        3694.0,
+        4661.0,
+        5896.0,
+        6761.0,
+        278.0,
+        211.0
+      ]
+    },
+    "LA CRUZ": {
+      "region": "VALPARAISO (V)",
+      "posta": "LCZ",
+      "tarifas_neto": [
+        2668.0,
+        2823.0,
+        3334.0,
+        3694.0,
+        4661.0,
+        5896.0,
+        6761.0,
+        278.0,
+        211.0
+      ]
+    },
+    "LA LIGUA": {
+      "region": "VALPARAISO (V)",
+      "posta": "LLC",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "LIMACHE": {
+      "region": "VALPARAISO (V)",
+      "posta": "LIC",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "LLAILLAY": {
+      "region": "VALPARAISO (V)",
+      "posta": "LLY",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "LOS ANDES": {
+      "region": "VALPARAISO (V)",
+      "posta": "LOB",
+      "tarifas_neto": [
+        2642.0,
+        2795.0,
+        3300.0,
+        3658.0,
+        4614.0,
+        5838.0,
+        6697.0,
+        276.0,
+        209.0
+      ]
+    },
+    "NOGALES": {
+      "region": "VALPARAISO (V)",
+      "posta": "NOG",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "OLMUE": {
+      "region": "VALPARAISO (V)",
+      "posta": "OLM",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "PANQUEHUE": {
+      "region": "VALPARAISO (V)",
+      "posta": "PNQ",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "PAPUDO": {
+      "region": "VALPARAISO (V)",
+      "posta": "PPO",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "PETORCA": {
+      "region": "VALPARAISO (V)",
+      "posta": "PTK",
+      "tarifas_neto": [
+        4002.0,
+        4234.0,
+        5000.0,
+        5541.0,
+        6991.0,
+        8844.0,
+        10141.0,
+        417.0,
+        316.0
+      ]
+    },
+    "PUCHUNCAVI": {
+      "region": "VALPARAISO (V)",
+      "posta": "PCV",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "PUTAENDO": {
+      "region": "VALPARAISO (V)",
+      "posta": "PUT",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "QUILLOTA": {
+      "region": "VALPARAISO (V)",
+      "posta": "QTA",
+      "tarifas_neto": [
+        2668.0,
+        2823.0,
+        3334.0,
+        3694.0,
+        4661.0,
+        5896.0,
+        6761.0,
+        278.0,
+        211.0
+      ]
+    },
+    "QUILPUE": {
+      "region": "VALPARAISO (V)",
+      "posta": "QPE",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "QUINTERO": {
+      "region": "VALPARAISO (V)",
+      "posta": "QTO",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "RINCONADA": {
+      "region": "VALPARAISO (V)",
+      "posta": "RDA",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "SANTO DOMINGO": {
+      "region": "VALPARAISO (V)",
+      "posta": "SDC",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "SAN ANTONIO": {
+      "region": "VALPARAISO (V)",
+      "posta": "SNT",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "SAN ESTEBAN": {
+      "region": "VALPARAISO (V)",
+      "posta": "SEN",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "SAN FELIPE": {
+      "region": "VALPARAISO (V)",
+      "posta": "SFP",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "SANTA MARIA": {
+      "region": "VALPARAISO (V)",
+      "posta": "SRI",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "VALPARAISO": {
+      "region": "VALPARAISO (V)",
+      "posta": "VAP",
+      "tarifas_neto": [
+        2605.0,
+        2773.0,
+        3198.0,
+        3609.0,
+        4576.0,
+        5444.0,
+        6237.0,
+        255.0,
+        191.0
+      ]
+    },
+    "VILLA ALEMANA": {
+      "region": "VALPARAISO (V)",
+      "posta": "VIA",
+      "tarifas_neto": [
+        2866.0,
+        3050.0,
+        3518.0,
+        3970.0,
+        5033.0,
+        5988.0,
+        6861.0,
+        281.0,
+        210.0
+      ]
+    },
+    "ZAPALLAR": {
+      "region": "VALPARAISO (V)",
+      "posta": "ZAR",
+      "tarifas_neto": [
+        2935.0,
+        3105.0,
+        3667.0,
+        4064.0,
+        5127.0,
+        6485.0,
+        7437.0,
+        306.0,
+        232.0
+      ]
+    },
+    "RANCAGUA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "RCG",
+      "tarifas_neto": [
+        2642.0,
+        2795.0,
+        3300.0,
+        3658.0,
+        4614.0,
+        5838.0,
+        6697.0,
+        276.0,
+        209.0
+      ]
+    },
+    "CHEPICA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "CHE",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "CHIMBARONGO": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "CHB",
+      "tarifas_neto": [
+        3963.0,
+        4192.0,
+        4950.0,
+        5487.0,
+        6921.0,
+        8757.0,
+        10045.0,
+        415.0,
+        314.0
+      ]
+    },
+    "CODEGUA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "ZDE",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "COINCO": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "CNO",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "COLTAUCO": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "CTO",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "DONIHUE": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "DNE",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "GRANEROS": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "GRA",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "LA ESTRELLA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "LAE",
+      "tarifas_neto": [
+        3908.0,
+        4160.0,
+        4797.0,
+        5414.0,
+        6863.0,
+        8166.0,
+        9355.0,
+        383.0,
+        286.0
+      ]
+    },
+    "LAS CABRAS": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "LCB",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "LITUECHE": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "LTU",
+      "tarifas_neto": [
+        3908.0,
+        4160.0,
+        4797.0,
+        5414.0,
+        6863.0,
+        8166.0,
+        9355.0,
+        383.0,
+        286.0
+      ]
+    },
+    "LOLOL": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "LOL",
+      "tarifas_neto": [
+        3963.0,
+        4192.0,
+        4950.0,
+        5487.0,
+        6921.0,
+        8757.0,
+        10045.0,
+        415.0,
+        314.0
+      ]
+    },
+    "MACHALI": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "MCH",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "MALLOA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "ZML",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "MARCHIHUE": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "MRH",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "NANCAGUA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "NGA",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "NAVIDAD": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "NAV",
+      "tarifas_neto": [
+        3908.0,
+        4160.0,
+        4797.0,
+        5414.0,
+        6863.0,
+        8166.0,
+        9355.0,
+        383.0,
+        286.0
+      ]
+    },
+    "OLIVAR": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "OAL",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "PALMILLA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "PLA",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "PAREDONES": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "PDS",
+      "tarifas_neto": [
+        3963.0,
+        4192.0,
+        4950.0,
+        5487.0,
+        6921.0,
+        8757.0,
+        10045.0,
+        415.0,
+        314.0
+      ]
+    },
+    "PEUMO": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "PEO",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "PICHIDEGUA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "PHA",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "PICHILEMU": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "PMU",
+      "tarifas_neto": [
+        3963.0,
+        4192.0,
+        4950.0,
+        5487.0,
+        6921.0,
+        8757.0,
+        10045.0,
+        415.0,
+        314.0
+      ]
+    },
+    "PERALILLO": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "ZPE",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "PLACILLA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "PLL",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "PUMANQUE": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "PMQ",
+      "tarifas_neto": [
+        3963.0,
+        4192.0,
+        4950.0,
+        5487.0,
+        6921.0,
+        8757.0,
+        10045.0,
+        415.0,
+        314.0
+      ]
+    },
+    "QUINTA DE TILCOCO": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "QCC",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "REQUINOA": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "REQ",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "RENGO": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "ZRG",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "SAN FERNANDO": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "SFR",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "SAN VICENTE": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "SVT",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "SANTA CRUZ": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "ZSC",
+      "tarifas_neto": [
+        3963.0,
+        4192.0,
+        4950.0,
+        5487.0,
+        6921.0,
+        8757.0,
+        10045.0,
+        415.0,
+        314.0
+      ]
+    },
+    "MOSTAZAL": {
+      "region": "O'HIGGINS (VI)",
+      "posta": "SFM",
+      "tarifas_neto": [
+        2906.0,
+        3074.0,
+        3630.0,
+        4024.0,
+        5076.0,
+        6422.0,
+        7366.0,
+        304.0,
+        230.0
+      ]
+    },
+    "CURICO": {
+      "region": "MAULE (VII)",
+      "posta": "CCO",
+      "tarifas_neto": [
+        2749.0,
+        2941.0,
+        3445.0,
+        3771.0,
+        4823.0,
+        6152.0,
+        7034.0,
+        283.0,
+        217.0
+      ]
+    },
+    "TALCA": {
+      "region": "MAULE (VII)",
+      "posta": "ZCA",
+      "tarifas_neto": [
+        2749.0,
+        2941.0,
+        3445.0,
+        3771.0,
+        4823.0,
+        6152.0,
+        7034.0,
+        283.0,
+        217.0
+      ]
+    },
+    "CAUQUENES": {
+      "region": "MAULE (VII)",
+      "posta": "CQE",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "CHANCO": {
+      "region": "MAULE (VII)",
+      "posta": "CNC",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "COLBUN": {
+      "region": "MAULE (VII)",
+      "posta": "CLB",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "CONSTITUCION": {
+      "region": "MAULE (VII)",
+      "posta": "CTT",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "CUREPTO": {
+      "region": "MAULE (VII)",
+      "posta": "CUR",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "EMPEDRADO": {
+      "region": "MAULE (VII)",
+      "posta": "EMP",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "HUALANE": {
+      "region": "MAULE (VII)",
+      "posta": "HNE",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "LICANTEN": {
+      "region": "MAULE (VII)",
+      "posta": "LCT",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "LINARES": {
+      "region": "MAULE (VII)",
+      "posta": "LNR",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "LONGAVI": {
+      "region": "MAULE (VII)",
+      "posta": "LGV",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "MAULE": {
+      "region": "MAULE (VII)",
+      "posta": "ZMA",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "MOLINA": {
+      "region": "MAULE (VII)",
+      "posta": "ZMO",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "PARRAL": {
+      "region": "MAULE (VII)",
+      "posta": "PRR",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "PELARCO": {
+      "region": "MAULE (VII)",
+      "posta": "PLC",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "PELLUHUE": {
+      "region": "MAULE (VII)",
+      "posta": "PEL",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "PENCAHUE": {
+      "region": "MAULE (VII)",
+      "posta": "PEH",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "RAUCO": {
+      "region": "MAULE (VII)",
+      "posta": "RAU",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "RIO CLARO": {
+      "region": "MAULE (VII)",
+      "posta": "RCL",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "RETIRO": {
+      "region": "MAULE (VII)",
+      "posta": "RTR",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "ROMERAL": {
+      "region": "MAULE (VII)",
+      "posta": "RML",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "SAGRADA FAMILIA": {
+      "region": "MAULE (VII)",
+      "posta": "SFA",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "SAN CLEMENTE": {
+      "region": "MAULE (VII)",
+      "posta": "STE",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "SAN JAVIER": {
+      "region": "MAULE (VII)",
+      "posta": "SJA",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "SAN RAFAEL": {
+      "region": "MAULE (VII)",
+      "posta": "SRF",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "TENO": {
+      "region": "MAULE (VII)",
+      "posta": "TEN",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "VICHUQUEN": {
+      "region": "MAULE (VII)",
+      "posta": "VCH",
+      "tarifas_neto": [
+        4123.0,
+        4412.0,
+        5168.0,
+        5657.0,
+        7234.0,
+        9228.0,
+        10550.0,
+        425.0,
+        325.0
+      ]
+    },
+    "VILLA ALEGRE": {
+      "region": "MAULE (VII)",
+      "posta": "VGE",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "YERBAS BUENAS": {
+      "region": "MAULE (VII)",
+      "posta": "YBB",
+      "tarifas_neto": [
+        3024.0,
+        3235.0,
+        3790.0,
+        4149.0,
+        5305.0,
+        6767.0,
+        7737.0,
+        312.0,
+        238.0
+      ]
+    },
+    "CHILLAN": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "YAI",
+      "tarifas_neto": [
+        3084.0,
+        3293.0,
+        3737.0,
+        4062.0,
+        5055.0,
+        6301.0,
+        7348.0,
+        340.0,
+        247.0
+      ]
+    },
+    "CHILLAN VIEJO": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "YAV",
+      "tarifas_neto": [
+        3084.0,
+        3293.0,
+        3737.0,
+        4062.0,
+        5055.0,
+        6301.0,
+        7348.0,
+        340.0,
+        247.0
+      ]
+    },
+    "BULNES": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "BLN",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "COBQUECURA": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "CQU",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "COELEMU": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "ZOU",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "COIHUECO": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "CUH",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "EL CARMEN": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "YCX",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "NINHUE": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "NIN",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "NIQUEN": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "NYY",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "PEMUCO": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "ZPC",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "PINTO": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "PNO",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "PORTEZUELO": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "49H",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "QUILLON": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "QLL",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "QUIRIHUE": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "QIH",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "RANQUIL": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "RNQ",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "SAN CARLOS": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "SCS",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "SAN FABIAN": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "SFB",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "SAN IGNACIO": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "SIG",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "SAN NICOLAS": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "SNL",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "TREHUACO": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "TRH",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "YUNGAY": {
+      "region": "ÑUBLE (XVI)",
+      "posta": "YGY",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "CONCEPCION": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "CCP",
+      "tarifas_neto": [
+        3084.0,
+        3293.0,
+        3737.0,
+        4062.0,
+        5055.0,
+        6301.0,
+        7348.0,
+        340.0,
+        247.0
+      ]
+    },
+    "ALTO BIOBIO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "AOO",
+      "tarifas_neto": [
+        4790.0,
+        5116.0,
+        5806.0,
+        6309.0,
+        7835.0,
+        9744.0,
+        11329.0,
+        514.0,
+        377.0
+      ]
+    },
+    "ANTUCO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "ANT",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "ARAUCO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "ARA",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "CABRERO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "CRO",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "CANETE": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "CTE",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "CHIGUAYANTE": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "CYE",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "CONTULMO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "CTU",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "CORONEL": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "CRN",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "CURANILAHUE": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "ZHE",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "FLORIDA": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "FLO",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "HUALPEN": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "HLP",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "HUALQUI": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "HLQ",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "LAJA": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "LLJ",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "LEBU": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "ZLB",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "LOS ALAMOS": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "LAL",
+      "tarifas_neto": [
+        4626.0,
+        4940.0,
+        5605.0,
+        6093.0,
+        7582.0,
+        9451.0,
+        11022.0,
+        511.0,
+        371.0
+      ]
+    },
+    "LOS ANGELES": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "LSQ",
+      "tarifas_neto": [
+        3193.0,
+        3411.0,
+        3871.0,
+        4206.0,
+        5224.0,
+        6496.0,
+        7553.0,
+        343.0,
+        251.0
+      ]
+    },
+    "LOTA": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "LOT",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "MULCHEN": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "MUL",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "NACIMIENTO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "NAC",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "NEGRETE": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "NRE",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "PENCO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "PCO",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "QUILACO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "QCO",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "QUILLECO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "QLO",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "SAN PEDRO DE LA PAZ": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "SPP",
+      "tarifas_neto": [
+        3084.0,
+        3293.0,
+        3737.0,
+        4062.0,
+        5055.0,
+        6301.0,
+        7348.0,
+        340.0,
+        247.0
+      ]
+    },
+    "SAN ROSENDO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "SRO",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "SANTA BARBARA": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "SBB",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "SANTA JUANA": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "SJN",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "TALCAHUANO": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "ZTO",
+      "tarifas_neto": [
+        3084.0,
+        3293.0,
+        3737.0,
+        4062.0,
+        5055.0,
+        6301.0,
+        7348.0,
+        340.0,
+        247.0
+      ]
+    },
+    "TIRUA": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "TUA",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "TOME": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "TMC",
+      "tarifas_neto": [
+        3392.0,
+        3623.0,
+        4111.0,
+        4468.0,
+        5560.0,
+        6931.0,
+        8083.0,
+        374.0,
+        272.0
+      ]
+    },
+    "TUCAPEL": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "TCP",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "YUMBEL": {
+      "region": "BIO-BIO (VIII)",
+      "posta": "ZYU",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "TEMUCO": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "ZCO",
+      "tarifas_neto": [
+        3312.0,
+        3481.0,
+        3956.0,
+        4273.0,
+        5398.0,
+        6700.0,
+        7763.0,
+        344.0,
+        253.0
+      ]
+    },
+    "ANGOL": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "ZOL",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "CARAHUE": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "CRH",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "CHOL CHOL": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "CHL",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "COLLIPULLI": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "CPI",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "CUNCO": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "NCO",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "CURACAUTIN": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "CCC",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "CURARREHUE": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "RRH",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "ERCILLA": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "ERL",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "FREIRE": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "FIE",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "GALVARINO": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "GAL",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "GORBEA": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "GEA",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "LAUTARO": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "LTR",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "LONCOCHE": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "LOC",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "LONQUIMAY": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "LQY",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "LOS SAUCES": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "SUS",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "MELIPEUCO": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "MLP",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "NUEVA IMPERIAL": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "NIP",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "PADRE LAS CASAS": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "PCS",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "PERQUENCO": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "PQO",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "PITRUFQUEN": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "PQN",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "PUCON": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "ZPU",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "SAAVEDRA": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "ZPS",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "PUREN": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "PUR",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "RENAICO": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "RNA",
+      "tarifas_neto": [
+        3513.0,
+        3752.0,
+        4258.0,
+        4626.0,
+        5746.0,
+        7145.0,
+        8308.0,
+        377.0,
+        276.0
+      ]
+    },
+    "TEODORO SCHMIDT": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "TEO",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "TOLTEN": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "TOL",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "TRAIGUEN": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "ZEN",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "LUMACO": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "LUM",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "VICTORIA": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "VIC",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "VILCUN": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "VIL",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "VILLARRICA": {
+      "region": "ARAUCANIA (IX)",
+      "posta": "VRR",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "VALDIVIA": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "ZAL",
+      "tarifas_neto": [
+        3565.0,
+        3805.0,
+        4303.0,
+        4539.0,
+        5891.0,
+        7076.0,
+        8161.0,
+        349.0,
+        261.0
+      ]
+    },
+    "CORRAL": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "ZCR",
+      "tarifas_neto": [
+        5347.0,
+        5708.0,
+        6454.0,
+        6809.0,
+        8836.0,
+        10613.0,
+        12242.0,
+        523.0,
+        392.0
+      ]
+    },
+    "FUTRONO": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "FTR",
+      "tarifas_neto": [
+        5347.0,
+        5708.0,
+        6454.0,
+        6809.0,
+        8836.0,
+        10613.0,
+        12242.0,
+        523.0,
+        392.0
+      ]
+    },
+    "LA UNION": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "ZLU",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "LAGO RANCO": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "LRO",
+      "tarifas_neto": [
+        5347.0,
+        5708.0,
+        6454.0,
+        6809.0,
+        8836.0,
+        10613.0,
+        12242.0,
+        523.0,
+        392.0
+      ]
+    },
+    "LANCO": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "LNC",
+      "tarifas_neto": [
+        3643.0,
+        3829.0,
+        4352.0,
+        4700.0,
+        5938.0,
+        7370.0,
+        8539.0,
+        378.0,
+        278.0
+      ]
+    },
+    "LOS LAGOS": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "LAG",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "MAFIL": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "MFL",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "PAILLACO": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "PAI",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "PANGUIPULLI": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "PGP",
+      "tarifas_neto": [
+        4968.0,
+        5221.0,
+        5934.0,
+        6410.0,
+        8097.0,
+        10050.0,
+        11645.0,
+        516.0,
+        379.0
+      ]
+    },
+    "RIO BUENO": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "RBN",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "MARIQUINA": {
+      "region": "LOS RIOS (XIV)",
+      "posta": "MQA",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "OSORNO": {
+      "region": "LOS LAGOS (X)",
+      "posta": "ZOS",
+      "tarifas_neto": [
+        3565.0,
+        3805.0,
+        4303.0,
+        4539.0,
+        5891.0,
+        7076.0,
+        8161.0,
+        349.0,
+        261.0
+      ]
+    },
+    "PUERTO MONTT": {
+      "region": "LOS LAGOS (X)",
+      "posta": "PMC",
+      "tarifas_neto": [
+        3484.0,
+        3718.0,
+        4205.0,
+        4481.0,
+        5738.0,
+        6932.0,
+        8018.0,
+        346.0,
+        256.0
+      ]
+    },
+    "CHAITEN": {
+      "region": "LOS LAGOS (X)",
+      "posta": "ZCN",
+      "tarifas_neto": [
+        5226.0,
+        5578.0,
+        6308.0,
+        6721.0,
+        8607.0,
+        10398.0,
+        12028.0,
+        519.0,
+        384.0
+      ]
+    },
+    "COCHAMO": {
+      "region": "LOS LAGOS (X)",
+      "posta": "CMO",
+      "tarifas_neto": [
+        5226.0,
+        5578.0,
+        6308.0,
+        6721.0,
+        8607.0,
+        10398.0,
+        12028.0,
+        519.0,
+        384.0
+      ]
+    },
+    "FUTALEUFU": {
+      "region": "LOS LAGOS (X)",
+      "posta": "FTF",
+      "tarifas_neto": [
+        5226.0,
+        5578.0,
+        6308.0,
+        6721.0,
+        8607.0,
+        10398.0,
+        12028.0,
+        519.0,
+        384.0
+      ]
+    },
+    "HUALAIHUE": {
+      "region": "LOS LAGOS (X)",
+      "posta": "HLH",
+      "tarifas_neto": [
+        5226.0,
+        5578.0,
+        6308.0,
+        6721.0,
+        8607.0,
+        10398.0,
+        12028.0,
+        519.0,
+        384.0
+      ]
+    },
+    "PALENA": {
+      "region": "LOS LAGOS (X)",
+      "posta": "PLE",
+      "tarifas_neto": [
+        5226.0,
+        5578.0,
+        6308.0,
+        6721.0,
+        8607.0,
+        10398.0,
+        12028.0,
+        519.0,
+        384.0
+      ]
+    },
+    "SAN JUAN DE LA COSTA": {
+      "region": "LOS LAGOS (X)",
+      "posta": "SJD",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "ANCUD": {
+      "region": "LOS LAGOS (X)",
+      "posta": "ACD",
+      "tarifas_neto": [
+        4283.0,
+        4781.0,
+        5448.0,
+        6189.0,
+        7364.0,
+        9259.0,
+        11390.0,
+        439.0,
+        359.0
+      ]
+    },
+    "CALBUCO": {
+      "region": "LOS LAGOS (X)",
+      "posta": "CBU",
+      "tarifas_neto": [
+        3832.0,
+        4090.0,
+        4626.0,
+        4929.0,
+        6312.0,
+        7625.0,
+        8820.0,
+        381.0,
+        282.0
+      ]
+    },
+    "CASTRO": {
+      "region": "LOS LAGOS (X)",
+      "posta": "CTR",
+      "tarifas_neto": [
+        3893.0,
+        4346.0,
+        4953.0,
+        5626.0,
+        6695.0,
+        8418.0,
+        10355.0,
+        399.0,
+        326.0
+      ]
+    },
+    "QUEILEN": {
+      "region": "LOS LAGOS (X)",
+      "posta": "QLE",
+      "tarifas_neto": [
+        5840.0,
+        6519.0,
+        7429.0,
+        8439.0,
+        10042.0,
+        12626.0,
+        15532.0,
+        599.0,
+        489.0
+      ]
+    },
+    "PUQUELDON": {
+      "region": "LOS LAGOS (X)",
+      "posta": "PQE",
+      "tarifas_neto": [
+        5840.0,
+        6519.0,
+        7429.0,
+        8439.0,
+        10042.0,
+        12626.0,
+        15532.0,
+        599.0,
+        489.0
+      ]
+    },
+    "CURACO DE VELEZ": {
+      "region": "LOS LAGOS (X)",
+      "posta": "CVL",
+      "tarifas_neto": [
+        5840.0,
+        6519.0,
+        7429.0,
+        8439.0,
+        10042.0,
+        12626.0,
+        15532.0,
+        599.0,
+        489.0
+      ]
+    },
+    "QUEMCHI": {
+      "region": "LOS LAGOS (X)",
+      "posta": "QUE",
+      "tarifas_neto": [
+        4283.0,
+        4781.0,
+        5448.0,
+        6189.0,
+        7364.0,
+        9259.0,
+        11390.0,
+        439.0,
+        359.0
+      ]
+    },
+    "QUINCHAO": {
+      "region": "LOS LAGOS (X)",
+      "posta": "ZAO",
+      "tarifas_neto": [
+        5840.0,
+        6519.0,
+        7429.0,
+        8439.0,
+        10042.0,
+        12626.0,
+        15532.0,
+        599.0,
+        489.0
+      ]
+    },
+    "CHONCHI": {
+      "region": "LOS LAGOS (X)",
+      "posta": "ZCH",
+      "tarifas_neto": [
+        4283.0,
+        4781.0,
+        5448.0,
+        6189.0,
+        7364.0,
+        9259.0,
+        11390.0,
+        439.0,
+        359.0
+      ]
+    },
+    "DALCAHUE": {
+      "region": "LOS LAGOS (X)",
+      "posta": "DLE",
+      "tarifas_neto": [
+        4283.0,
+        4781.0,
+        5448.0,
+        6189.0,
+        7364.0,
+        9259.0,
+        11390.0,
+        439.0,
+        359.0
+      ]
+    },
+    "FRESIA": {
+      "region": "LOS LAGOS (X)",
+      "posta": "FSA",
+      "tarifas_neto": [
+        3832.0,
+        4090.0,
+        4626.0,
+        4929.0,
+        6312.0,
+        7625.0,
+        8820.0,
+        381.0,
+        282.0
+      ]
+    },
+    "FRUTILLAR": {
+      "region": "LOS LAGOS (X)",
+      "posta": "FRT",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "LLANQUIHUE": {
+      "region": "LOS LAGOS (X)",
+      "posta": "LLQ",
+      "tarifas_neto": [
+        3832.0,
+        4090.0,
+        4626.0,
+        4929.0,
+        6312.0,
+        7625.0,
+        8820.0,
+        381.0,
+        282.0
+      ]
+    },
+    "LOS MUERMOS": {
+      "region": "LOS LAGOS (X)",
+      "posta": "LMU",
+      "tarifas_neto": [
+        3832.0,
+        4090.0,
+        4626.0,
+        4929.0,
+        6312.0,
+        7625.0,
+        8820.0,
+        381.0,
+        282.0
+      ]
+    },
+    "MAULLIN": {
+      "region": "LOS LAGOS (X)",
+      "posta": "MAU",
+      "tarifas_neto": [
+        3832.0,
+        4090.0,
+        4626.0,
+        4929.0,
+        6312.0,
+        7625.0,
+        8820.0,
+        381.0,
+        282.0
+      ]
+    },
+    "PUERTO OCTAY": {
+      "region": "LOS LAGOS (X)",
+      "posta": "PCY",
+      "tarifas_neto": [
+        5347.0,
+        5708.0,
+        6454.0,
+        6809.0,
+        8836.0,
+        10613.0,
+        12242.0,
+        523.0,
+        392.0
+      ]
+    },
+    "PUYEHUE": {
+      "region": "LOS LAGOS (X)",
+      "posta": "PYH",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "PUERTO VARAS": {
+      "region": "LOS LAGOS (X)",
+      "posta": "ZPV",
+      "tarifas_neto": [
+        3832.0,
+        4090.0,
+        4626.0,
+        4929.0,
+        6312.0,
+        7625.0,
+        8820.0,
+        381.0,
+        282.0
+      ]
+    },
+    "PURRANQUE": {
+      "region": "LOS LAGOS (X)",
+      "posta": "PRE",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "QUELLON": {
+      "region": "LOS LAGOS (X)",
+      "posta": "QLN",
+      "tarifas_neto": [
+        5840.0,
+        6519.0,
+        7429.0,
+        8439.0,
+        10042.0,
+        12626.0,
+        15532.0,
+        599.0,
+        489.0
+      ]
+    },
+    "RIO NEGRO": {
+      "region": "LOS LAGOS (X)",
+      "posta": "RNC",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "SAN PABLO": {
+      "region": "LOS LAGOS (X)",
+      "posta": "SPL",
+      "tarifas_neto": [
+        3921.0,
+        4186.0,
+        4733.0,
+        4993.0,
+        6480.0,
+        7783.0,
+        8977.0,
+        384.0,
+        287.0
+      ]
+    },
+    "ARICA": {
+      "region": "ARICA Y PARINACOTA (XV)",
+      "posta": "ARI",
+      "tarifas_neto": [
+        4773.0,
+        5627.0,
+        7170.0,
+        8056.0,
+        13434.0,
+        21080.0,
+        24715.0,
+        1284.0,
+        1239.0
+      ]
+    },
+    "CAMARONES": {
+      "region": "ARICA Y PARINACOTA (XV)",
+      "posta": "CAM",
+      "tarifas_neto": [
+        15563.0,
+        16844.0,
+        19158.0,
+        20488.0,
+        28555.0,
+        40023.0,
+        45476.0,
+        1926.0,
+        1859.0
+      ]
+    },
+    "GENERAL LAGOS": {
+      "region": "ARICA Y PARINACOTA (XV)",
+      "posta": "LGR",
+      "tarifas_neto": [
+        15563.0,
+        16844.0,
+        19158.0,
+        20488.0,
+        28555.0,
+        40023.0,
+        45476.0,
+        1926.0,
+        1859.0
+      ]
+    },
+    "PUTRE": {
+      "region": "ARICA Y PARINACOTA (XV)",
+      "posta": "PTR",
+      "tarifas_neto": [
+        15563.0,
+        16844.0,
+        19158.0,
+        20488.0,
+        28555.0,
+        40023.0,
+        45476.0,
+        1926.0,
+        1859.0
+      ]
+    },
+    "IQUIQUE": {
+      "region": "TARAPACA (I)",
+      "posta": "IQQ",
+      "tarifas_neto": [
+        4462.0,
+        5259.0,
+        6702.0,
+        7529.0,
+        12555.0,
+        19703.0,
+        23255.0,
+        1245.0,
+        1171.0
+      ]
+    },
+    "ALTO HOSPICIO": {
+      "region": "TARAPACA (I)",
+      "posta": "AHP",
+      "tarifas_neto": [
+        4908.0,
+        5785.0,
+        7372.0,
+        8281.0,
+        13810.0,
+        21673.0,
+        25580.0,
+        1370.0,
+        1289.0
+      ]
+    },
+    "CAMINA": {
+      "region": "TARAPACA (I)",
+      "posta": "CMN",
+      "tarifas_neto": [
+        15097.0,
+        16292.0,
+        18456.0,
+        19696.0,
+        27235.0,
+        37957.0,
+        43285.0,
+        1868.0,
+        1757.0
+      ]
+    },
+    "COLCHANE": {
+      "region": "TARAPACA (I)",
+      "posta": "COE",
+      "tarifas_neto": [
+        15097.0,
+        16292.0,
+        18456.0,
+        19696.0,
+        27235.0,
+        37957.0,
+        43285.0,
+        1868.0,
+        1757.0
+      ]
+    },
+    "HUARA": {
+      "region": "TARAPACA (I)",
+      "posta": "HRA",
+      "tarifas_neto": [
+        6693.0,
+        7888.0,
+        10053.0,
+        11293.0,
+        18832.0,
+        29554.0,
+        34882.0,
+        1868.0,
+        1757.0
+      ]
+    },
+    "PICA": {
+      "region": "TARAPACA (I)",
+      "posta": "OPC",
+      "tarifas_neto": [
+        6693.0,
+        7888.0,
+        10053.0,
+        11293.0,
+        18832.0,
+        29554.0,
+        34882.0,
+        1868.0,
+        1757.0
+      ]
+    },
+    "POZO ALMONTE": {
+      "region": "TARAPACA (I)",
+      "posta": "PAM",
+      "tarifas_neto": [
+        6693.0,
+        7888.0,
+        10053.0,
+        11293.0,
+        18832.0,
+        29554.0,
+        34882.0,
+        1868.0,
+        1757.0
+      ]
+    },
+    "ANTOFAGASTA": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "ANF",
+      "tarifas_neto": [
+        4318.0,
+        4994.0,
+        6366.0,
+        7153.0,
+        11928.0,
+        18717.0,
+        22146.0,
+        1189.0,
+        1109.0
+      ]
+    },
+    "CALAMA": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "CJC",
+      "tarifas_neto": [
+        4462.0,
+        5259.0,
+        6702.0,
+        7529.0,
+        12555.0,
+        19703.0,
+        23255.0,
+        1245.0,
+        1171.0
+      ]
+    },
+    "MARIA ELENA": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "MAE",
+      "tarifas_neto": [
+        6478.0,
+        7491.0,
+        9550.0,
+        10729.0,
+        17892.0,
+        28075.0,
+        33219.0,
+        1784.0,
+        1664.0
+      ]
+    },
+    "MEJILLONES": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "MJS",
+      "tarifas_neto": [
+        6478.0,
+        7491.0,
+        9550.0,
+        10729.0,
+        17892.0,
+        28075.0,
+        33219.0,
+        1784.0,
+        1664.0
+      ]
+    },
+    "OLLAGUE": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "OLL",
+      "tarifas_neto": [
+        15097.0,
+        16292.0,
+        18456.0,
+        19696.0,
+        27235.0,
+        37957.0,
+        43285.0,
+        1868.0,
+        1757.0
+      ]
+    },
+    "SAN PEDRO DE ATACAMA": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "SPX",
+      "tarifas_neto": [
+        6693.0,
+        7888.0,
+        10053.0,
+        11293.0,
+        18832.0,
+        29554.0,
+        34882.0,
+        1868.0,
+        1757.0
+      ]
+    },
+    "SIERRA GORDA": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "SGD",
+      "tarifas_neto": [
+        6693.0,
+        7888.0,
+        10053.0,
+        11293.0,
+        18832.0,
+        29554.0,
+        34882.0,
+        1868.0,
+        1757.0
+      ]
+    },
+    "TALTAL": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "TTL",
+      "tarifas_neto": [
+        6478.0,
+        7491.0,
+        9550.0,
+        10729.0,
+        17892.0,
+        28075.0,
+        33219.0,
+        1784.0,
+        1664.0
+      ]
+    },
+    "TOCOPILLA": {
+      "region": "ANTOFAGASTA (II)",
+      "posta": "TOC",
+      "tarifas_neto": [
+        6478.0,
+        7491.0,
+        9550.0,
+        10729.0,
+        17892.0,
+        28075.0,
+        33219.0,
+        1784.0,
+        1664.0
+      ]
+    },
+    "COYHAIQUE": {
+      "region": "AYSEN (XI)",
+      "posta": "GXQ",
+      "tarifas_neto": [
+        4851.0,
+        5760.0,
+        7229.0,
+        7813.0,
+        13316.0,
+        22071.0,
+        25992.0,
+        1415.0,
+        1334.0
+      ]
+    },
+    "CHILE CHICO": {
+      "region": "AYSEN (XI)",
+      "posta": "CCH",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "CISNES": {
+      "region": "AYSEN (XI)",
+      "posta": "CNS",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "LAGO VERDE": {
+      "region": "AYSEN (XI)",
+      "posta": "LVE",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "GUAITECAS": {
+      "region": "AYSEN (XI)",
+      "posta": "GCA",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "OHIGGINS": {
+      "region": "AYSEN (XI)",
+      "posta": "OHG",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "TORTEL": {
+      "region": "AYSEN (XI)",
+      "posta": "TRT",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "COCHRANE": {
+      "region": "AYSEN (XI)",
+      "posta": "CCL",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "AYSEN": {
+      "region": "AYSEN (XI)",
+      "posta": "WPA",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "RIO IBANEZ": {
+      "region": "AYSEN (XI)",
+      "posta": "RIB",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "PUNTA ARENAS": {
+      "region": "MAGALLANES (XII)",
+      "posta": "PUQ",
+      "tarifas_neto": [
+        4851.0,
+        5760.0,
+        7229.0,
+        7813.0,
+        13316.0,
+        22071.0,
+        25992.0,
+        1415.0,
+        1334.0
+      ]
+    },
+    "LAGUNA BLANCA": {
+      "region": "MAGALLANES (XII)",
+      "posta": "LBL",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "PORVENIR": {
+      "region": "MAGALLANES (XII)",
+      "posta": "ZPR",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "PRIMAVERA": {
+      "region": "MAGALLANES (XII)",
+      "posta": "PRI",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "RIO VERDE": {
+      "region": "MAGALLANES (XII)",
+      "posta": "RVE",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "SAN GREGORIO": {
+      "region": "MAGALLANES (XII)",
+      "posta": "SGG",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "TIMAUKEL": {
+      "region": "MAGALLANES (XII)",
+      "posta": "PTI",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "CABO DE HORNOS": {
+      "region": "MAGALLANES (XII)",
+      "posta": "HOR",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "TORRES DEL PAINE": {
+      "region": "MAGALLANES (XII)",
+      "posta": "TRP",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "NATALES": {
+      "region": "MAGALLANES (XII)",
+      "posta": "PNT",
+      "tarifas_neto": [
+        7277.0,
+        8639.0,
+        10843.0,
+        11719.0,
+        19974.0,
+        33107.0,
+        38987.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "ANTARTICA": {
+      "region": "MAGALLANES (XII)",
+      "posta": "ATC",
+      "tarifas_neto": [
+        15680.0,
+        17043.0,
+        19246.0,
+        20122.0,
+        28377.0,
+        41511.0,
+        47391.0,
+        2123.0,
+        2002.0
+      ]
+    },
+    "DESTINO": {
+      "region": "REGION",
+      "posta": "",
+      "tarifas_neto": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "SAMEDAY (RM)": {
+      "region": "REGION METROPOLITANA (XIII)",
+      "posta": "",
+      "tarifas_neto": [
+        2223.0,
+        2223.0,
+        2223.0,
+        2223.0,
+        3276.0,
+        3856.0,
+        4533.0,
+        259.0,
+        259.0
+      ]
+    }
+  }
+}
