@@ -311,6 +311,17 @@
     "canal_shopify": true
   },
   {
+    "sku": "LCS01",
+    "nombre": "Libro Curso Impreso Lettering",
+    "costo_neto": 2000,
+    "dimensiones_cm": {"ancho": 0, "alto": 0, "largo": 0},
+    "peso_gramos": 0,
+    "keywords": ["libro curso", "libro lettering", "sara art"],
+    "canal_ml": false,
+    "canal_shopify": false,
+    "data_pendiente": ["sku_oficial", "nombre_oficial"]
+  },
+  {
     "sku": "3010",
     "nombre": "Pack Didáctico",
     "costo_neto": 11345,
@@ -350,15 +361,14 @@
   {
     "sku": "3013",
     "nombre": "Pack Marcadores + Curso + Libro",
-    "costo_neto": null,
-    "dimensiones_cm": null,
-    "peso_gramos": null,
+    "costo_neto": 12924,
+    "dimensiones_cm": {"ancho": 38, "alto": 26, "largo": 32},
+    "peso_gramos": 1000,
     "keywords": ["pack marcadores"],
     "canal_ml": true,
     "canal_shopify": true,
     "es_pack": true,
-    "componentes": ["1150", "1141", "1114", "LIBRO_CURSO"],
-    "data_pendiente": ["costo_libro_curso", "dimensiones_libro_curso", "peso_libro_curso"]
+    "componentes": ["1150", "1141", "1114", "LCS01"]
   },
   {
     "sku": "3014",
@@ -375,15 +385,14 @@
   {
     "sku": "3015",
     "nombre": "Pack Marcadores XL",
-    "costo_neto": null,
-    "dimensiones_cm": null,
-    "peso_gramos": null,
+    "costo_neto": 17210,
+    "dimensiones_cm": {"ancho": 41, "alto": 27, "largo": 32},
+    "peso_gramos": 1500,
     "keywords": ["pack marcadores xl"],
     "canal_ml": true,
     "canal_shopify": true,
     "es_pack": true,
-    "componentes": ["1150", "1142", "1114", "LIBRO_CURSO"],
-    "data_pendiente": ["costo_libro_curso", "dimensiones_libro_curso", "peso_libro_curso"]
+    "componentes": ["1150", "1142", "1114", "LCS01"]
   },
   {
     "sku": "11502",
