@@ -331,7 +331,19 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
             lambda: {"fecha": None, "ciudad": "", "total": 0.0}
         ), []
 
-        with open(dest, newline="", encoding="utf-8") as f:
+        # Try utf-8-sig first (handles BOM from Mac/Excel), fallback to latin-1
+        enc = "utf-8"
+        for candidate in ("utf-8-sig", "utf-8", "latin-1"):
+            try:
+                with open(dest, newline="", encoding=candidate) as f:
+                    sample = f.read(2048)
+                if sample:
+                    enc = candidate
+                    break
+            except UnicodeDecodeError:
+                continue
+
+        with open(dest, newline="", encoding=enc) as f:
             reader = csv.DictReader(f)
             for i, row in enumerate(reader, start=1):
                 product  = (row.get("Product title") or "").strip()
@@ -357,6 +369,9 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                 if product:
                     line_items.append({"id": f"{order_id}-{i}", "order_id": order_id,
                                        "titulo": product, "precio": price or 0.0, "total": total})
+
+        if not rows:
+            raise HTTPException(400, f"CSV sin filas válidas (encoding: {enc}). Revisa el archivo.")
 
         BATCH = 500
 
@@ -389,7 +404,6 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                     total_linea NUMERIC)
             """))
 
-            # --- limpiar y cargar tablas legado ---
             conn.execute(text("TRUNCATE shopify_ventas_historico RESTART IDENTITY"))
             conn.execute(text("TRUNCATE shopify_ventas_2025 RESTART IDENTITY"))
             hist = [r for r in rows if r["year"] < 2025]
@@ -415,7 +429,6 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                         "total": r["total"], "year": r["year"]}
                        for r in new_[i:i+BATCH]])
 
-            # --- shopify_pedidos ---
             conn.execute(text("TRUNCATE shopify_pedidos CASCADE"))
             items = list(orders_agg.items())
             for i in range(0, len(items), BATCH):
@@ -429,7 +442,6 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                         "total": round(agg["total"], 2), "neto": round(agg["total"] / 1.19, 2)}
                        for oid, agg in items[i:i+BATCH]])
 
-            # --- shopify_lineas_pedido ---
             conn.execute(text("TRUNCATE shopify_lineas_pedido"))
             for i in range(0, len(line_items), BATCH):
                 conn.execute(text("""
@@ -443,6 +455,7 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
 
         return {
             "mensaje": "Carga histórica Shopify completada",
+            "encoding_detectado": enc,
             "filas_totales": len(rows),
             "shopify_ventas_historico": len(hist),
             "shopify_ventas_2025": len(new_),
@@ -450,6 +463,8 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
             "shopify_lineas_pedido": len(line_items),
             "rango": f"{min(r['day'] for r in rows)} → {max(r['day'] for r in rows)}",
         }
+    except HTTPException:
+        raise
     except Exception as e:
         dest.unlink(missing_ok=True)
         raise HTTPException(500, f"Error al cargar CSV: {str(e)}")
