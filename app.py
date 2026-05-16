@@ -331,7 +331,17 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
             lambda: {"fecha": None, "ciudad": "", "total": 0.0}
         ), []
 
-        with open(dest, newline="", encoding="utf-8") as f:
+        # Try utf-8-sig first (handles BOM from Mac/Excel), fallback to latin-1
+        for enc in ("utf-8-sig", "utf-8", "latin-1"):
+            try:
+                with open(dest, newline="", encoding=enc) as f:
+                    sample = f.read(1024)
+                if sample:
+                    break
+            except UnicodeDecodeError:
+                continue
+
+        with open(dest, newline="", encoding=enc) as f:
             reader = csv.DictReader(f)
             for i, row in enumerate(reader, start=1):
                 product  = (row.get("Product title") or "").strip()
@@ -441,8 +451,12 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                         "precio": li["precio"], "total": li["total"]}
                        for li in line_items[i:i+BATCH]])
 
+        if not rows:
+            raise HTTPException(400, f"CSV sin filas válidas (encoding detectado: {enc}). Revisa el archivo.")
+
         return {
             "mensaje": "Carga histórica Shopify completada",
+            "encoding_detectado": enc,
             "filas_totales": len(rows),
             "shopify_ventas_historico": len(hist),
             "shopify_ventas_2025": len(new_),
