@@ -23,6 +23,7 @@ from src.calc.pnl_ml import calcular_pnl_ml
 from src.calc.kpis import check_alerts, classify_product, BREAK_EVEN_MENSUAL_NETO
 from src.calc.costos_fijos import TOTAL_CF_MENSUAL
 from src.ingestion.meta_ads import parse_meta_json, match_campana_producto, get_latest_meta_json
+from src.ingestion.meta_api import fetch_meta_ads, get_meta_gasto_mes
 from src.ingestion.mercadolibre import parse_ml_xlsx, load_ml_to_db
 from src.ingestion.cartola import parse_cartola_xlsx, load_cartola_to_db
 from src.reports.dashboard import render_dashboard
@@ -54,12 +55,43 @@ def _get_keywords_df(engine) -> pd.DataFrame:
         return pd.DataFrame(columns=["producto", "palabras", "prioridad"])
 
 
-def _build_campanas_context(engine) -> list[dict]:
-    """Build campaign context from latest Meta Ads JSON or DB."""
-    json_path = get_latest_meta_json()
+def _build_campanas_context(engine, anio: int = None, mes: int = None) -> list[dict]:
+    """Build campaign context from Meta API (live) or fallback to uploaded JSON."""
+    if anio is None or mes is None:
+        anio, mes = _current_period()
     keywords_df = _get_keywords_df(engine)
     campanas = []
 
+    # Try live Meta API first
+    try:
+        import os
+        if os.getenv("META_ACCESS_TOKEN"):
+            meta_data = fetch_meta_ads(anio, mes)
+            df_c = meta_data.get("campanas", pd.DataFrame())
+            if not df_c.empty:
+                for _, row in df_c.iterrows():
+                    nombre = str(row.get("nombre", ""))
+                    gasto = float(row.get("gasto_clp", 0))
+                    ingresos = float(row.get("ingresos_clp", 0))
+                    roas = float(row.get("roas", 0))
+                    producto = match_campana_producto(nombre, keywords_df)
+                    margen_pct = ((ingresos - gasto) / ingresos * 100) if ingresos > 0 else 0
+                    senal = classify_product(margen_pct, volumen_relevante=gasto > 50000)
+                    campanas.append({
+                        "nombre": nombre,
+                        "producto": producto,
+                        "gasto_clp": round(gasto),
+                        "ingresos_clp": round(ingresos),
+                        "roas": round(roas, 2),
+                        "senal": senal,
+                        "fuente": "api",
+                    })
+                return campanas
+    except Exception:
+        pass
+
+    # Fallback: uploaded JSON file
+    json_path = get_latest_meta_json()
     if json_path:
         try:
             meta_data = parse_meta_json(json_path)
@@ -79,6 +111,7 @@ def _build_campanas_context(engine) -> list[dict]:
                     "ingresos_clp": round(ingresos),
                     "roas": round(roas, 2),
                     "senal": senal,
+                    "fuente": "json",
                 })
         except Exception:
             pass
@@ -133,10 +166,11 @@ async def dashboard():
         return HTMLResponse("<h2>Error: DATABASE_URL no configurada.</h2>", status_code=500)
 
     anio, mes = _current_period()
-    pnl_shopify = calcular_pnl_shopify(engine, anio, mes)
+    meta_gasto = get_meta_gasto_mes(anio, mes)
+    pnl_shopify = calcular_pnl_shopify(engine, anio, mes, meta_gasto_override=meta_gasto if meta_gasto > 0 else None)
     pnl_ml = calcular_pnl_ml(engine, anio, mes)
     alertas = check_alerts(pnl_shopify, pnl_ml)
-    campanas = _build_campanas_context(engine)
+    campanas = _build_campanas_context(engine, anio, mes)
     recs = _build_recomendaciones(pnl_shopify, pnl_ml, alertas)
 
     periodo = date.today().strftime("%B %Y")
