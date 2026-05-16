@@ -23,6 +23,7 @@ from src.calc.pnl_ml import calcular_pnl_ml
 from src.calc.kpis import check_alerts, classify_product, BREAK_EVEN_MENSUAL_NETO
 from src.calc.costos_fijos import TOTAL_CF_MENSUAL
 from src.ingestion.meta_ads import parse_meta_json, match_campana_producto, get_latest_meta_json
+from src.ingestion.meta_api import fetch_meta_ads, get_meta_gasto_mes
 from src.ingestion.mercadolibre import parse_ml_xlsx, load_ml_to_db
 from src.ingestion.cartola import parse_cartola_xlsx, load_cartola_to_db
 from src.reports.dashboard import render_dashboard
@@ -54,12 +55,43 @@ def _get_keywords_df(engine) -> pd.DataFrame:
         return pd.DataFrame(columns=["producto", "palabras", "prioridad"])
 
 
-def _build_campanas_context(engine) -> list[dict]:
-    """Build campaign context from latest Meta Ads JSON or DB."""
-    json_path = get_latest_meta_json()
+def _build_campanas_context(engine, anio: int = None, mes: int = None) -> list[dict]:
+    """Build campaign context from Meta API (live) or fallback to uploaded JSON."""
+    if anio is None or mes is None:
+        anio, mes = _current_period()
     keywords_df = _get_keywords_df(engine)
     campanas = []
 
+    # Try live Meta API first
+    try:
+        import os
+        if os.getenv("META_ACCESS_TOKEN"):
+            meta_data = fetch_meta_ads(anio, mes)
+            df_c = meta_data.get("campanas", pd.DataFrame())
+            if not df_c.empty:
+                for _, row in df_c.iterrows():
+                    nombre = str(row.get("nombre", ""))
+                    gasto = float(row.get("gasto_clp", 0))
+                    ingresos = float(row.get("ingresos_clp", 0))
+                    roas = float(row.get("roas", 0))
+                    producto = match_campana_producto(nombre, keywords_df)
+                    margen_pct = ((ingresos - gasto) / ingresos * 100) if ingresos > 0 else 0
+                    senal = classify_product(margen_pct, volumen_relevante=gasto > 50000)
+                    campanas.append({
+                        "nombre": nombre,
+                        "producto": producto,
+                        "gasto_clp": round(gasto),
+                        "ingresos_clp": round(ingresos),
+                        "roas": round(roas, 2),
+                        "senal": senal,
+                        "fuente": "api",
+                    })
+                return campanas
+    except Exception:
+        pass
+
+    # Fallback: uploaded JSON file
+    json_path = get_latest_meta_json()
     if json_path:
         try:
             meta_data = parse_meta_json(json_path)
@@ -79,6 +111,7 @@ def _build_campanas_context(engine) -> list[dict]:
                     "ingresos_clp": round(ingresos),
                     "roas": round(roas, 2),
                     "senal": senal,
+                    "fuente": "json",
                 })
         except Exception:
             pass
@@ -133,10 +166,11 @@ async def dashboard():
         return HTMLResponse("<h2>Error: DATABASE_URL no configurada.</h2>", status_code=500)
 
     anio, mes = _current_period()
-    pnl_shopify = calcular_pnl_shopify(engine, anio, mes)
+    meta_gasto = get_meta_gasto_mes(anio, mes)
+    pnl_shopify = calcular_pnl_shopify(engine, anio, mes, meta_gasto_override=meta_gasto if meta_gasto > 0 else None)
     pnl_ml = calcular_pnl_ml(engine, anio, mes)
     alertas = check_alerts(pnl_shopify, pnl_ml)
-    campanas = _build_campanas_context(engine)
+    campanas = _build_campanas_context(engine, anio, mes)
     recs = _build_recomendaciones(pnl_shopify, pnl_ml, alertas)
 
     periodo = date.today().strftime("%B %Y")
@@ -332,13 +366,11 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
         ), []
 
         # Try utf-8-sig first (handles BOM from Mac/Excel), fallback to latin-1
-        enc = "utf-8"
-        for candidate in ("utf-8-sig", "utf-8", "latin-1"):
+        for enc in ("utf-8-sig", "utf-8", "latin-1"):
             try:
-                with open(dest, newline="", encoding=candidate) as f:
-                    sample = f.read(2048)
+                with open(dest, newline="", encoding=enc) as f:
+                    sample = f.read(1024)
                 if sample:
-                    enc = candidate
                     break
             except UnicodeDecodeError:
                 continue
@@ -369,9 +401,6 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                 if product:
                     line_items.append({"id": f"{order_id}-{i}", "order_id": order_id,
                                        "titulo": product, "precio": price or 0.0, "total": total})
-
-        if not rows:
-            raise HTTPException(400, f"CSV sin filas válidas (encoding: {enc}). Revisa el archivo.")
 
         BATCH = 500
 
@@ -404,6 +433,7 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                     total_linea NUMERIC)
             """))
 
+            # --- limpiar y cargar tablas legado ---
             conn.execute(text("TRUNCATE shopify_ventas_historico RESTART IDENTITY"))
             conn.execute(text("TRUNCATE shopify_ventas_2025 RESTART IDENTITY"))
             hist = [r for r in rows if r["year"] < 2025]
@@ -429,6 +459,7 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                         "total": r["total"], "year": r["year"]}
                        for r in new_[i:i+BATCH]])
 
+            # --- shopify_pedidos ---
             conn.execute(text("TRUNCATE shopify_pedidos CASCADE"))
             items = list(orders_agg.items())
             for i in range(0, len(items), BATCH):
@@ -442,6 +473,7 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                         "total": round(agg["total"], 2), "neto": round(agg["total"] / 1.19, 2)}
                        for oid, agg in items[i:i+BATCH]])
 
+            # --- shopify_lineas_pedido ---
             conn.execute(text("TRUNCATE shopify_lineas_pedido"))
             for i in range(0, len(line_items), BATCH):
                 conn.execute(text("""
@@ -453,6 +485,9 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
                         "precio": li["precio"], "total": li["total"]}
                        for li in line_items[i:i+BATCH]])
 
+        if not rows:
+            raise HTTPException(400, f"CSV sin filas válidas (encoding detectado: {enc}). Revisa el archivo.")
+
         return {
             "mensaje": "Carga histórica Shopify completada",
             "encoding_detectado": enc,
@@ -463,8 +498,6 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
             "shopify_lineas_pedido": len(line_items),
             "rango": f"{min(r['day'] for r in rows)} → {max(r['day'] for r in rows)}",
         }
-    except HTTPException:
-        raise
     except Exception as e:
         dest.unlink(missing_ok=True)
         raise HTTPException(500, f"Error al cargar CSV: {str(e)}")
