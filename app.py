@@ -249,6 +249,63 @@ async def upload_ml_report(
         raise HTTPException(400, f"Error al procesar xlsx ML: {str(e)}")
 
 
+@app.get("/admin/upload", response_class=HTMLResponse)
+async def admin_upload_page():
+    return HTMLResponse("""<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Carga CSV Shopify</title>
+<style>
+  body{font-family:sans-serif;max-width:600px;margin:60px auto;padding:0 20px;background:#0f0f0f;color:#eee}
+  h2{color:#a78bfa}
+  .card{background:#1a1a2e;border:1px solid #333;border-radius:12px;padding:30px}
+  label{display:block;margin-bottom:8px;color:#ccc}
+  input[type=file]{width:100%;padding:10px;background:#111;border:1px dashed #555;border-radius:8px;color:#eee;cursor:pointer;box-sizing:border-box}
+  button{margin-top:20px;width:100%;padding:14px;background:#7c3aed;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer}
+  button:hover{background:#6d28d9}
+  #status{margin-top:20px;padding:15px;border-radius:8px;display:none}
+  .ok{background:#052e16;border:1px solid #16a34a;color:#86efac}
+  .err{background:#2d0505;border:1px solid #dc2626;color:#fca5a5}
+  pre{white-space:pre-wrap;word-break:break-all;font-size:13px;margin:0}
+</style>
+</head>
+<body>
+<h2>Carga Histórico Shopify → PostgreSQL</h2>
+<div class="card">
+  <label>Selecciona el CSV de ventas Shopify (2020-2026):</label>
+  <input type="file" id="csvFile" accept=".csv">
+  <button onclick="upload()">Cargar a PostgreSQL</button>
+  <div id="status"></div>
+</div>
+<script>
+async function upload() {
+  const file = document.getElementById('csvFile').files[0];
+  if (!file) { alert('Selecciona un archivo CSV primero'); return; }
+  const btn = document.querySelector('button');
+  const status = document.getElementById('status');
+  btn.textContent = 'Cargando... (puede tardar 30-60 seg)';
+  btn.disabled = true;
+  status.style.display = 'none';
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const r = await fetch('/upload/shopify-historico', {method:'POST', body:fd});
+    const j = await r.json();
+    status.className = r.ok ? 'ok' : 'err';
+    status.style.display = 'block';
+    status.innerHTML = '<pre>' + JSON.stringify(j, null, 2) + '</pre>';
+  } catch(e) {
+    status.className = 'err';
+    status.style.display = 'block';
+    status.innerHTML = '<pre>Error: ' + e.message + '</pre>';
+  }
+  btn.textContent = 'Cargar a PostgreSQL';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>""")
+
+
 @app.post("/upload/shopify-historico")
 async def upload_shopify_historico(file: UploadFile = File(...)):
     """
