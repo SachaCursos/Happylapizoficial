@@ -249,6 +249,212 @@ async def upload_ml_report(
         raise HTTPException(400, f"Error al procesar xlsx ML: {str(e)}")
 
 
+@app.get("/admin/upload", response_class=HTMLResponse)
+async def admin_upload_page():
+    return HTMLResponse("""<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Carga CSV Shopify</title>
+<style>
+  body{font-family:sans-serif;max-width:600px;margin:60px auto;padding:0 20px;background:#0f0f0f;color:#eee}
+  h2{color:#a78bfa}
+  .card{background:#1a1a2e;border:1px solid #333;border-radius:12px;padding:30px}
+  label{display:block;margin-bottom:8px;color:#ccc}
+  input[type=file]{width:100%;padding:10px;background:#111;border:1px dashed #555;border-radius:8px;color:#eee;cursor:pointer;box-sizing:border-box}
+  button{margin-top:20px;width:100%;padding:14px;background:#7c3aed;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer}
+  button:hover{background:#6d28d9}
+  #status{margin-top:20px;padding:15px;border-radius:8px;display:none}
+  .ok{background:#052e16;border:1px solid #16a34a;color:#86efac}
+  .err{background:#2d0505;border:1px solid #dc2626;color:#fca5a5}
+  pre{white-space:pre-wrap;word-break:break-all;font-size:13px;margin:0}
+</style>
+</head>
+<body>
+<h2>Carga Histórico Shopify → PostgreSQL</h2>
+<div class="card">
+  <label>Selecciona el CSV de ventas Shopify (2020-2026):</label>
+  <input type="file" id="csvFile" accept=".csv">
+  <button onclick="upload()">Cargar a PostgreSQL</button>
+  <div id="status"></div>
+</div>
+<script>
+async function upload() {
+  const file = document.getElementById('csvFile').files[0];
+  if (!file) { alert('Selecciona un archivo CSV primero'); return; }
+  const btn = document.querySelector('button');
+  const status = document.getElementById('status');
+  btn.textContent = 'Cargando... (puede tardar 30-60 seg)';
+  btn.disabled = true;
+  status.style.display = 'none';
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const r = await fetch('/upload/shopify-historico', {method:'POST', body:fd});
+    const j = await r.json();
+    status.className = r.ok ? 'ok' : 'err';
+    status.style.display = 'block';
+    status.innerHTML = '<pre>' + JSON.stringify(j, null, 2) + '</pre>';
+  } catch(e) {
+    status.className = 'err';
+    status.style.display = 'block';
+    status.innerHTML = '<pre>Error: ' + e.message + '</pre>';
+  }
+  btn.textContent = 'Cargar a PostgreSQL';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>""")
+
+
+@app.post("/upload/shopify-historico")
+async def upload_shopify_historico(file: UploadFile = File(...)):
+    """
+    Carga el CSV histórico de ventas Shopify (2021-2026) a PostgreSQL.
+    Pobla: shopify_ventas_historico, shopify_ventas_2025, shopify_pedidos, shopify_lineas_pedido.
+    """
+    if not file.filename.endswith(".csv"):
+        raise HTTPException(400, "Debe ser un archivo .csv")
+
+    import csv
+    from collections import defaultdict
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    dest = UPLOADS_DIR / f"shopify_historico_{timestamp}.csv"
+    with open(dest, "wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    try:
+        engine = get_engine()
+
+        # --- parseo ---
+        rows, orders_agg, line_items = [], defaultdict(
+            lambda: {"fecha": None, "ciudad": "", "total": 0.0}
+        ), []
+
+        with open(dest, newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for i, row in enumerate(reader, start=1):
+                product  = (row.get("Product title") or "").strip()
+                price_s  = (row.get("Product variant price") or "").strip()
+                day      = (row.get("Day") or "").strip()
+                customer = (row.get("Customer name") or "").strip()
+                city     = (row.get("Shipping city") or "").strip()
+                order_id = (row.get("Order ID") or "").strip()
+                total_s  = (row.get("Total sales") or "").strip()
+                if not day or not order_id:
+                    continue
+                price = float(price_s) if price_s else None
+                total = float(total_s) if total_s else 0.0
+                year  = int(day[:4])
+                rows.append({"product": product or None, "price": price, "day": day,
+                             "customer": customer, "city": city, "order_id": order_id,
+                             "total": total, "year": year})
+                agg = orders_agg[order_id]
+                agg["total"] += total
+                if agg["fecha"] is None:
+                    agg["fecha"] = day
+                    agg["ciudad"] = city
+                if product:
+                    line_items.append({"id": f"{order_id}-{i}", "order_id": order_id,
+                                       "titulo": product, "precio": price or 0.0, "total": total})
+
+        BATCH = 500
+
+        with engine.begin() as conn:
+            # --- DDL ---
+            conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS shopify_ventas_historico (
+                    id SERIAL PRIMARY KEY, nombre_del_producto TEXT,
+                    precio_de_la_variante_de_producto NUMERIC, dia DATE,
+                    nombre_del_cliente TEXT, ciudad_del_envio TEXT, ventas_totales NUMERIC)
+            """))
+            conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS shopify_ventas_2025 (
+                    id SERIAL PRIMARY KEY, titulo_del_producto TEXT,
+                    precio_de_la_variante_de_producto NUMERIC, dia DATE,
+                    nombre_del_cliente TEXT, ciudad_del_envio TEXT,
+                    id_de_pedido TEXT, ventas_totales NUMERIC, anio INTEGER)
+            """))
+            conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS shopify_pedidos (
+                    shopify_id TEXT PRIMARY KEY, order_number TEXT, created_at DATE,
+                    ciudad_envio TEXT, total_precio NUMERIC, ventas_netas NUMERIC,
+                    moneda TEXT DEFAULT 'CLP', synced_at TIMESTAMPTZ DEFAULT NOW())
+            """))
+            conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS shopify_lineas_pedido (
+                    shopify_id TEXT PRIMARY KEY, order_id TEXT, product_id TEXT,
+                    variant_id TEXT, titulo TEXT, titulo_variante TEXT, sku TEXT,
+                    cantidad INTEGER, precio NUMERIC, total_descuento NUMERIC DEFAULT 0,
+                    total_linea NUMERIC)
+            """))
+
+            # --- limpiar y cargar tablas legado ---
+            conn.execute(text("TRUNCATE shopify_ventas_historico RESTART IDENTITY"))
+            conn.execute(text("TRUNCATE shopify_ventas_2025 RESTART IDENTITY"))
+            hist = [r for r in rows if r["year"] < 2025]
+            new_ = [r for r in rows if r["year"] >= 2025]
+            for i in range(0, len(hist), BATCH):
+                conn.execute(text("""
+                    INSERT INTO shopify_ventas_historico
+                        (nombre_del_producto, precio_de_la_variante_de_producto,
+                         dia, nombre_del_cliente, ciudad_del_envio, ventas_totales)
+                    VALUES (:prod, :precio, :dia, :cliente, :ciudad, :total)
+                """), [{"prod": r["product"], "precio": r["price"], "dia": r["day"],
+                        "cliente": r["customer"], "ciudad": r["city"], "total": r["total"]}
+                       for r in hist[i:i+BATCH]])
+            for i in range(0, len(new_), BATCH):
+                conn.execute(text("""
+                    INSERT INTO shopify_ventas_2025
+                        (titulo_del_producto, precio_de_la_variante_de_producto,
+                         dia, nombre_del_cliente, ciudad_del_envio,
+                         id_de_pedido, ventas_totales, anio)
+                    VALUES (:prod, :precio, :dia, :cliente, :ciudad, :oid, :total, :year)
+                """), [{"prod": r["product"], "precio": r["price"], "dia": r["day"],
+                        "cliente": r["customer"], "ciudad": r["city"], "oid": r["order_id"],
+                        "total": r["total"], "year": r["year"]}
+                       for r in new_[i:i+BATCH]])
+
+            # --- shopify_pedidos ---
+            conn.execute(text("TRUNCATE shopify_pedidos CASCADE"))
+            items = list(orders_agg.items())
+            for i in range(0, len(items), BATCH):
+                conn.execute(text("""
+                    INSERT INTO shopify_pedidos
+                        (shopify_id, order_number, created_at, ciudad_envio,
+                         total_precio, ventas_netas, moneda)
+                    VALUES (:id, :num, :fecha, :ciudad, :total, :neto, 'CLP')
+                    ON CONFLICT (shopify_id) DO NOTHING
+                """), [{"id": oid, "num": oid, "fecha": agg["fecha"], "ciudad": agg["ciudad"],
+                        "total": round(agg["total"], 2), "neto": round(agg["total"] / 1.19, 2)}
+                       for oid, agg in items[i:i+BATCH]])
+
+            # --- shopify_lineas_pedido ---
+            conn.execute(text("TRUNCATE shopify_lineas_pedido"))
+            for i in range(0, len(line_items), BATCH):
+                conn.execute(text("""
+                    INSERT INTO shopify_lineas_pedido
+                        (shopify_id, order_id, titulo, precio, total_linea)
+                    VALUES (:id, :oid, :titulo, :precio, :total)
+                    ON CONFLICT (shopify_id) DO NOTHING
+                """), [{"id": li["id"], "oid": li["order_id"], "titulo": li["titulo"],
+                        "precio": li["precio"], "total": li["total"]}
+                       for li in line_items[i:i+BATCH]])
+
+        return {
+            "mensaje": "Carga histórica Shopify completada",
+            "filas_totales": len(rows),
+            "shopify_ventas_historico": len(hist),
+            "shopify_ventas_2025": len(new_),
+            "shopify_pedidos": len(orders_agg),
+            "shopify_lineas_pedido": len(line_items),
+            "rango": f"{min(r['day'] for r in rows)} → {max(r['day'] for r in rows)}",
+        }
+    except Exception as e:
+        dest.unlink(missing_ok=True)
+        raise HTTPException(500, f"Error al cargar CSV: {str(e)}")
+
+
 @app.post("/upload/cartola")
 async def upload_cartola(
     file: UploadFile = File(...),
