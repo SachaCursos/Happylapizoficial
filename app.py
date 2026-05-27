@@ -871,7 +871,27 @@ async def upload_productos_costos(file: UploadFile = File(...)):
         if not rows:
             raise HTTPException(400, "CSV vacío o sin filas válidas")
 
-        # Add columns if they don't exist
+        # Create table if it doesn't exist yet (ETL may not have run)
+        with engine.begin() as conn:
+            conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS shopify_productos (
+                    shopify_id       TEXT PRIMARY KEY,
+                    titulo           TEXT,
+                    handle           TEXT,
+                    estado           TEXT,
+                    vendor           TEXT,
+                    tipo             TEXT,
+                    tags             TEXT,
+                    inventario_total INTEGER,
+                    imagen_url       TEXT,
+                    precio_min       NUMERIC,
+                    created_at       TIMESTAMPTZ,
+                    updated_at       TIMESTAMPTZ,
+                    synced_at        TIMESTAMPTZ DEFAULT NOW()
+                )
+            """))
+
+        # Add cost/dimension columns if they don't exist
         with engine.begin() as conn:
             for col, tipo in [
                 ("costo_bruto_clp", "NUMERIC"),
@@ -888,8 +908,49 @@ async def upload_productos_costos(file: UploadFile = File(...)):
         # Load existing product titles from DB for fuzzy matching
         with engine.connect() as conn:
             db_products = conn.execute(
-                text("SELECT shopify_id, titulo FROM shopify_productos")
+                text("SELECT shopify_id, titulo FROM shopify_productos WHERE titulo IS NOT NULL")
             ).fetchall()
+
+        # If table is empty, insert products directly from CSV using name as ID
+        if not db_products:
+            with engine.begin() as conn:
+                for row in rows:
+                    nombre = (row.get("Nombre_producto") or "").strip()
+                    if not nombre:
+                        continue
+                    conn.execute(text("""
+                        INSERT INTO shopify_productos
+                            (shopify_id, titulo, costo_bruto_clp, costo_neto_clp,
+                             ancho_cm, alto_cm, largo_cm, peso_fisico_g)
+                        VALUES
+                            (:id, :titulo, :cb, :cn, :ancho, :alto, :largo, :peso)
+                        ON CONFLICT (shopify_id) DO UPDATE SET
+                            costo_bruto_clp = EXCLUDED.costo_bruto_clp,
+                            costo_neto_clp  = EXCLUDED.costo_neto_clp,
+                            ancho_cm        = EXCLUDED.ancho_cm,
+                            alto_cm         = EXCLUDED.alto_cm,
+                            largo_cm        = EXCLUDED.largo_cm,
+                            peso_fisico_g   = EXCLUDED.peso_fisico_g,
+                            synced_at       = NOW()
+                    """), {
+                        "id":    nombre,
+                        "titulo": nombre,
+                        "cb":    safe_num(row.get("Costo_bruto_CLP", "")),
+                        "cn":    safe_num(row.get("Costo_neto_CLP", "")),
+                        "ancho": safe_num(row.get("Ancho_cm", "")),
+                        "alto":  safe_num(row.get("Alto_cm", "")),
+                        "largo": safe_num(row.get("Largo_cm", "")),
+                        "peso":  safe_num(row.get("Peso_fisico_g", "")),
+                    })
+            return {
+                "mensaje": "shopify_productos estaba vacía — productos insertados directamente desde CSV",
+                "insertados": len([r for r in rows if r.get("Nombre_producto")]),
+                "nota": "Cuando el ETL de Shopify sincronice, actualizará estos registros con los IDs reales",
+            }
+
+        def safe_num(val: str):
+            v = val.strip() if val else ""
+            return float(v) if v else None
 
         def best_match(nombre_csv: str) -> str | None:
             """Return shopify_id of best matching product, or None."""
@@ -915,10 +976,6 @@ async def upload_productos_costos(file: UploadFile = File(...)):
                     if all(w in t for w in words):
                         return sid
             return None
-
-        def safe_num(val: str):
-            v = val.strip() if val else ""
-            return float(v) if v else None
 
         updated, not_found = [], []
 
