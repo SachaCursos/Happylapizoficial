@@ -466,6 +466,20 @@ async def upload_meta_csv(file: UploadFile = File(...)):
             conn.execute(text(
                 "ALTER TABLE meta_gasto_diario ADD COLUMN IF NOT EXISTS compras INTEGER DEFAULT 0"
             ))
+            # Add unique constraint if table existed without it
+            conn.execute(text("""
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1 FROM pg_constraint
+                        WHERE conname = 'meta_campanas_historico_anio_mes_nombre_key'
+                    ) THEN
+                        ALTER TABLE meta_campanas_historico
+                            ADD CONSTRAINT meta_campanas_historico_anio_mes_nombre_key
+                            UNIQUE (anio, mes, nombre);
+                    END IF;
+                END$$
+            """))
             conn.execute(text("""
                 CREATE TABLE IF NOT EXISTS meta_ads_detalle (
                     id             SERIAL PRIMARY KEY,
