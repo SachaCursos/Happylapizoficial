@@ -161,12 +161,47 @@ def ensure_meta_tables(engine: Engine) -> None:
 
 
 def _save_month_to_db(engine: Engine, anio: int, mes: int, data: dict) -> dict:
-    """Upsert one month of Meta data into the historico tables. Returns row counts."""
+    """
+    Upsert one month of Meta API data into DB tables.
+    Populates: meta_gasto_diario, meta_campanas_historico, meta_ads_detalle.
+    Applies producto_publicitado matching via marketing_keywords table.
+    """
+    from src.ingestion.meta_ads import match_campana_producto
+
     df_daily: pd.DataFrame = data.get("gasto_diario", pd.DataFrame())
     df_camp: pd.DataFrame = data.get("campanas", pd.DataFrame())
 
     n_daily = 0
     n_camp = 0
+    n_detalle = 0
+
+    # Load keywords for producto_publicitado matching
+    try:
+        keywords_df = pd.read_sql("SELECT * FROM marketing_keywords", engine)
+    except Exception:
+        keywords_df = pd.DataFrame(columns=["producto", "palabras", "prioridad"])
+
+    ensure_meta_tables(engine)
+
+    # Ensure meta_ads_detalle and producto_publicitado column exist
+    with engine.begin() as conn:
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS meta_ads_detalle (
+                id             SERIAL PRIMARY KEY,
+                dia            DATE NOT NULL,
+                campana        TEXT,
+                conjunto       TEXT,
+                anuncio        TEXT,
+                tipo_resultado TEXT,
+                resultados     INTEGER DEFAULT 0,
+                gasto          NUMERIC DEFAULT 0,
+                producto_publicitado TEXT,
+                synced_at      TIMESTAMPTZ DEFAULT NOW()
+            )
+        """))
+        conn.execute(text(
+            "ALTER TABLE meta_ads_detalle ADD COLUMN IF NOT EXISTS producto_publicitado TEXT"
+        ))
 
     with engine.begin() as conn:
         if not df_daily.empty:
@@ -197,6 +232,9 @@ def _save_month_to_db(engine: Engine, anio: int, mes: int, data: dict) -> dict:
 
         if not df_camp.empty:
             for _, row in df_camp.iterrows():
+                nombre = str(row.get("nombre", ""))
+                producto = match_campana_producto(nombre, keywords_df)
+
                 conn.execute(text("""
                     INSERT INTO meta_campanas_historico
                         (anio, mes, campaign_id, nombre, gasto,
@@ -204,8 +242,7 @@ def _save_month_to_db(engine: Engine, anio: int, mes: int, data: dict) -> dict:
                     VALUES
                         (:anio, :mes, :cid, :nombre, :gasto,
                          :imp, :clics, :compras, :ingresos, :roas)
-                    ON CONFLICT (anio, mes, campaign_id) DO UPDATE SET
-                        nombre      = EXCLUDED.nombre,
+                    ON CONFLICT (anio, mes, nombre) DO UPDATE SET
                         gasto       = EXCLUDED.gasto,
                         impresiones = EXCLUDED.impresiones,
                         clics       = EXCLUDED.clics,
@@ -216,8 +253,8 @@ def _save_month_to_db(engine: Engine, anio: int, mes: int, data: dict) -> dict:
                 """), {
                     "anio":    anio,
                     "mes":     mes,
-                    "cid":     str(row.get("id", "")),
-                    "nombre":  str(row.get("nombre", "")),
+                    "cid":     str(row.get("id", "")) or None,
+                    "nombre":  nombre,
                     "gasto":   float(row.get("gasto_clp", 0)),
                     "imp":     int(row.get("impresiones", 0)),
                     "clics":   int(row.get("clics", 0)),
@@ -225,9 +262,31 @@ def _save_month_to_db(engine: Engine, anio: int, mes: int, data: dict) -> dict:
                     "ingresos": float(row.get("ingresos_clp", 0)),
                     "roas":    float(row.get("roas", 0)),
                 })
+
+                # Also insert one summary row per campaign per day into meta_ads_detalle
+                for _, day_row in df_daily.iterrows():
+                    dia_str = str(day_row.get("dia", ""))[:10]
+                    if not dia_str:
+                        continue
+                    conn.execute(text("""
+                        INSERT INTO meta_ads_detalle
+                            (dia, campana, conjunto, anuncio, tipo_resultado,
+                             resultados, gasto, producto_publicitado)
+                        VALUES
+                            (:dia, :campana, 'API', 'API', 'Compras en el sitio web',
+                             :compras, :gasto, :producto)
+                    """), {
+                        "dia":      dia_str,
+                        "campana":  nombre,
+                        "compras":  int(float(row.get("compras", 0))),
+                        "gasto":    float(row.get("gasto_clp", 0)) / max(len(df_daily), 1),
+                        "producto": producto,
+                    })
+                    n_detalle += 1
+
                 n_camp += 1
 
-    return {"dias": n_daily, "campanas": n_camp}
+    return {"dias": n_daily, "campanas": n_camp, "detalle": n_detalle}
 
 
 def backfill_meta_historico(

@@ -7,16 +7,21 @@ from __future__ import annotations
 
 import os
 import json
+import logging
 import shutil
 from datetime import date, datetime
 from pathlib import Path
 from typing import Optional
 
 import pandas as pd
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from fastapi import FastAPI, File, UploadFile, Query, HTTPException
 from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import create_engine, text
+
+log = logging.getLogger("happylapiz")
 
 from src.calc.pnl_shopify import calcular_pnl_shopify
 from src.calc.pnl_ml import calcular_pnl_ml
@@ -35,6 +40,45 @@ UPLOADS_DIR.mkdir(exist_ok=True)
 
 app = FastAPI(title="Happy Lapiz Dashboard", version="1.0.0")
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+scheduler = AsyncIOScheduler(timezone="America/Santiago")
+
+
+async def _job_sync_meta_ads():
+    """Daily job: fetch Meta Ads for current month and persist to DB."""
+    if not os.getenv("META_ACCESS_TOKEN"):
+        log.warning("[scheduler] META_ACCESS_TOKEN no configurado — saltando sync Meta Ads")
+        return
+    if not DATABASE_URL:
+        log.warning("[scheduler] DATABASE_URL no configurado — saltando sync Meta Ads")
+        return
+    try:
+        engine = create_engine(DATABASE_URL)
+        today = date.today()
+        from src.ingestion.meta_api import fetch_meta_ads, _save_month_to_db
+        data = fetch_meta_ads(today.year, today.month)
+        result = _save_month_to_db(engine, today.year, today.month, data)
+        log.info(f"[scheduler] Meta Ads sync OK: {result}")
+    except Exception as e:
+        log.error(f"[scheduler] Meta Ads sync ERROR: {e}")
+
+
+@app.on_event("startup")
+async def startup():
+    # Sync Meta Ads diariamente a las 06:00 hora Chile
+    scheduler.add_job(
+        _job_sync_meta_ads,
+        CronTrigger(hour=6, minute=0),
+        id="sync_meta_ads_diario",
+        replace_existing=True,
+    )
+    scheduler.start()
+    log.info("[scheduler] Iniciado — Meta Ads sync diario a las 06:00 Santiago")
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    scheduler.shutdown(wait=False)
 
 
 def get_engine():
@@ -926,6 +970,24 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
     except Exception as e:
         dest.unlink(missing_ok=True)
         raise HTTPException(500, f"Error al cargar CSV: {str(e)}")
+
+
+@app.post("/admin/sync-meta-hoy")
+async def sync_meta_hoy():
+    """Fuerza el sync de Meta Ads para el mes actual ahora mismo."""
+    await _job_sync_meta_ads()
+    today = date.today()
+    engine = get_engine()
+    with engine.connect() as conn:
+        row = conn.execute(text(
+            "SELECT COUNT(*), SUM(gasto) FROM meta_gasto_diario "
+            "WHERE EXTRACT(YEAR FROM dia)=:y AND EXTRACT(MONTH FROM dia)=:m"
+        ), {"y": today.year, "m": today.month}).fetchone()
+    return {
+        "mensaje": f"Sync Meta Ads {today.year}-{today.month:02d} completado",
+        "dias_en_db": row[0],
+        "gasto_mes_clp": round(float(row[1] or 0)),
+    }
 
 
 @app.post("/admin/meta-historico")
