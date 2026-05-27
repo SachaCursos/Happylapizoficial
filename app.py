@@ -320,6 +320,15 @@ async def admin_upload_page():
 </div>
 
 <div class="card">
+  <h3>🏷️ Keywords de productos</h3>
+  <label>CSV con producto, palabras, prioridad:</label>
+  <input type="file" id="kwFile" accept=".csv">
+  <p class="hint">Subí esto primero — se usa para asignar productos a las campañas Meta Ads.</p>
+  <button onclick="uploadKW()">Cargar Keywords → PostgreSQL</button>
+  <div id="kwStatus" class="status"></div>
+</div>
+
+<div class="card">
   <h3>📢 Histórico Meta Ads</h3>
   <label>CSV exportado desde Meta Ads Manager (un archivo por año):</label>
   <input type="file" id="metaFile" accept=".csv" multiple>
@@ -348,6 +357,27 @@ async function uploadShopify() {
     status.innerHTML = '<pre>Error: ' + e.message + '</pre>';
   }
   btn.textContent = 'Cargar Shopify → PostgreSQL'; btn.disabled = false;
+}
+
+async function uploadKW() {
+  const file = document.getElementById('kwFile').files[0];
+  if (!file) { alert('Selecciona el CSV de keywords'); return; }
+  const btn = event.target;
+  const status = document.getElementById('kwStatus');
+  btn.textContent = 'Cargando…'; btn.disabled = true;
+  status.style.display = 'none';
+  const fd = new FormData(); fd.append('file', file);
+  try {
+    const r = await fetch('/upload/marketing-keywords', {method:'POST', body:fd});
+    const j = await r.json();
+    status.className = 'status ' + (r.ok ? 'ok' : 'err');
+    status.style.display = 'block';
+    status.innerHTML = '<pre>' + JSON.stringify(j, null, 2) + '</pre>';
+  } catch(e) {
+    status.className = 'status err'; status.style.display = 'block';
+    status.innerHTML = '<pre>Error: ' + e.message + '</pre>';
+  }
+  btn.textContent = 'Cargar Keywords → PostgreSQL'; btn.disabled = false;
 }
 
 async function uploadMeta() {
@@ -529,13 +559,24 @@ async def upload_meta_csv(file: UploadFile = File(...)):
                         "gasto": v["gasto"], "compras": v["compras"]}
                        for k, v in camp_items[i:i+BATCH]])
 
+        # Apply producto_publicitado matching
+        keywords_df = _get_keywords_df(engine)
+        for row in detalle_rows:
+            row["producto_publicitado"] = match_campana_producto(row["campana"], keywords_df)
+
+        # Ensure producto_publicitado column exists
+        with engine.begin() as conn:
+            conn.execute(text(
+                "ALTER TABLE meta_ads_detalle ADD COLUMN IF NOT EXISTS producto_publicitado TEXT"
+            ))
+
         # Insert meta_ads_detalle (append — no dedup needed for raw detail)
         with engine.begin() as conn:
             for i in range(0, len(detalle_rows), BATCH):
                 conn.execute(text("""
                     INSERT INTO meta_ads_detalle
-                        (dia, campana, conjunto, anuncio, tipo_resultado, resultados, gasto)
-                    VALUES (:dia, :campana, :conjunto, :anuncio, :tipo_resultado, :resultados, :gasto)
+                        (dia, campana, conjunto, anuncio, tipo_resultado, resultados, gasto, producto_publicitado)
+                    VALUES (:dia, :campana, :conjunto, :anuncio, :tipo_resultado, :resultados, :gasto, :producto_publicitado)
                 """), detalle_rows[i:i+BATCH])
 
         # Summary
@@ -559,6 +600,169 @@ async def upload_meta_csv(file: UploadFile = File(...)):
     except Exception as e:
         dest.unlink(missing_ok=True)
         raise HTTPException(500, f"Error al procesar CSV: {str(e)}")
+
+
+@app.post("/upload/marketing-keywords")
+async def upload_marketing_keywords(file: UploadFile = File(...)):
+    """Carga el CSV de marketing_keywords a PostgreSQL."""
+    if not file.filename.endswith(".csv"):
+        raise HTTPException(400, "Debe ser un archivo .csv")
+
+    import csv as _csv
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    dest = UPLOADS_DIR / f"marketing_keywords_{timestamp}.csv"
+    with open(dest, "wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    try:
+        engine = get_engine()
+        rows = []
+        for enc in ("utf-8-sig", "utf-8", "latin-1"):
+            try:
+                with open(dest, newline="", encoding=enc) as f:
+                    rows = list(_csv.DictReader(f))
+                break
+            except UnicodeDecodeError:
+                continue
+
+        with engine.begin() as conn:
+            conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS marketing_keywords (
+                    id        SERIAL PRIMARY KEY,
+                    producto  TEXT NOT NULL,
+                    palabras  TEXT NOT NULL,
+                    prioridad INTEGER DEFAULT 5
+                )
+            """))
+            conn.execute(text("TRUNCATE marketing_keywords RESTART IDENTITY"))
+            for row in rows:
+                conn.execute(text("""
+                    INSERT INTO marketing_keywords (producto, palabras, prioridad)
+                    VALUES (:producto, :palabras, :prioridad)
+                """), {
+                    "producto":  row.get("producto", "").strip(),
+                    "palabras":  row.get("palabras", "").strip(),
+                    "prioridad": int(row.get("prioridad", 5)),
+                })
+
+        return {"mensaje": f"Keywords cargadas: {len(rows)} productos", "archivo": str(dest)}
+
+    except Exception as e:
+        dest.unlink(missing_ok=True)
+        raise HTTPException(500, f"Error: {str(e)}")
+
+
+@app.post("/admin/backfill-producto-publicitado")
+async def backfill_producto_publicitado():
+    """
+    1. Agrega columna producto_publicitado a meta_ads_detalle si no existe.
+    2. Backfill de todas las filas existentes usando marketing_keywords.
+    3. Devuelve schema de meta_ads para comparar con meta_ads_detalle.
+    """
+    engine = get_engine()
+    keywords_df = _get_keywords_df(engine)
+
+    if keywords_df.empty:
+        raise HTTPException(400, "Primero cargá el CSV de marketing_keywords en /upload/marketing-keywords")
+
+    with engine.begin() as conn:
+        conn.execute(text(
+            "ALTER TABLE meta_ads_detalle ADD COLUMN IF NOT EXISTS producto_publicitado TEXT"
+        ))
+
+    # Fetch all rows that need matching (NULL or 'Otros')
+    with engine.connect() as conn:
+        rows = conn.execute(text(
+            "SELECT id, campana FROM meta_ads_detalle WHERE producto_publicitado IS NULL OR producto_publicitado = 'Otros'"
+        )).fetchall()
+
+    BATCH = 200
+    updated = 0
+    with engine.begin() as conn:
+        for i in range(0, len(rows), BATCH):
+            batch = rows[i:i+BATCH]
+            for row_id, campana in batch:
+                producto = match_campana_producto(campana or "", keywords_df)
+                conn.execute(text(
+                    "UPDATE meta_ads_detalle SET producto_publicitado = :p WHERE id = :id"
+                ), {"p": producto, "id": row_id})
+            updated += len(batch)
+
+    # Inspect meta_ads schema vs meta_ads_detalle
+    with engine.connect() as conn:
+        def get_cols(table):
+            result = conn.execute(text("""
+                SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = :t ORDER BY ordinal_position
+            """), {"t": table}).fetchall()
+            return {r[0]: r[1] for r in result}
+
+        cols_meta_ads    = get_cols("meta_ads")
+        cols_meta_detalle = get_cols("meta_ads_detalle")
+
+    only_in_meta_ads = {k: v for k, v in cols_meta_ads.items() if k not in cols_meta_detalle}
+
+    return {
+        "filas_actualizadas": updated,
+        "keywords_usadas": len(keywords_df),
+        "columnas_en_meta_ads_que_faltan_en_detalle": only_in_meta_ads,
+        "columnas_meta_ads_detalle": list(cols_meta_detalle.keys()),
+    }
+
+
+@app.post("/admin/migrar-columnas-meta-ads")
+async def migrar_columnas_meta_ads():
+    """
+    Copia las columnas relevantes de meta_ads a meta_ads_detalle
+    que no sean IDs técnicos ni datos ya presentes.
+    """
+    engine = get_engine()
+
+    # Columns to skip (internal IDs, duplicates, or irrelevant)
+    SKIP = {"id", "created_at", "updated_at", "synced_at", "account_id",
+            "campaign_id", "adset_id", "ad_id", "date_start", "date_stop"}
+
+    with engine.connect() as conn:
+        def get_cols(table):
+            r = conn.execute(text("""
+                SELECT column_name, data_type FROM information_schema.columns
+                WHERE table_name = :t ORDER BY ordinal_position
+            """), {"t": table}).fetchall()
+            return {row[0]: row[1] for row in r}
+
+        cols_source = get_cols("meta_ads")
+        cols_dest   = get_cols("meta_ads_detalle")
+
+    to_add = {k: v for k, v in cols_source.items()
+              if k not in cols_dest and k not in SKIP}
+
+    if not to_add:
+        return {"mensaje": "No hay columnas nuevas para migrar.", "columnas_revisadas": list(cols_source.keys())}
+
+    # Map Postgres types to safe ADD COLUMN types
+    TYPE_MAP = {
+        "integer": "INTEGER", "bigint": "BIGINT", "numeric": "NUMERIC",
+        "double precision": "NUMERIC", "real": "NUMERIC",
+        "character varying": "TEXT", "text": "TEXT",
+        "boolean": "BOOLEAN", "date": "DATE",
+        "timestamp with time zone": "TIMESTAMPTZ",
+        "timestamp without time zone": "TIMESTAMPTZ",
+    }
+
+    added = {}
+    with engine.begin() as conn:
+        for col, dtype in to_add.items():
+            pg_type = TYPE_MAP.get(dtype, "TEXT")
+            conn.execute(text(
+                f"ALTER TABLE meta_ads_detalle ADD COLUMN IF NOT EXISTS {col} {pg_type}"
+            ))
+            added[col] = pg_type
+
+    return {
+        "mensaje": f"Se agregaron {len(added)} columnas a meta_ads_detalle",
+        "columnas_agregadas": added,
+    }
 
 
 @app.post("/upload/shopify-historico")
