@@ -911,6 +911,10 @@ async def upload_productos_costos(file: UploadFile = File(...)):
                 text("SELECT shopify_id, titulo FROM shopify_productos WHERE titulo IS NOT NULL")
             ).fetchall()
 
+        def safe_num(val: str):
+            v = val.strip() if val else ""
+            return float(v) if v else None
+
         # If table is empty, insert products directly from CSV using name as ID
         if not db_products:
             with engine.begin() as conn:
@@ -947,10 +951,6 @@ async def upload_productos_costos(file: UploadFile = File(...)):
                 "insertados": len([r for r in rows if r.get("Nombre_producto")]),
                 "nota": "Cuando el ETL de Shopify sincronice, actualizará estos registros con los IDs reales",
             }
-
-        def safe_num(val: str):
-            v = val.strip() if val else ""
-            return float(v) if v else None
 
         def best_match(nombre_csv: str) -> str | None:
             """Return shopify_id of best matching product, or None."""
