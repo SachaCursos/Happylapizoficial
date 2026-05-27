@@ -466,6 +466,10 @@ async def upload_meta_csv(file: UploadFile = File(...)):
             conn.execute(text(
                 "ALTER TABLE meta_gasto_diario ADD COLUMN IF NOT EXISTS compras INTEGER DEFAULT 0"
             ))
+            # campaign_id was NOT NULL in old schema — make it nullable
+            conn.execute(text(
+                "ALTER TABLE meta_campanas_historico ALTER COLUMN campaign_id DROP NOT NULL"
+            ))
             # Add unique constraint if table existed without it
             conn.execute(text("""
                 DO $$
