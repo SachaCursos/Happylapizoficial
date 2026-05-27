@@ -68,13 +68,17 @@ def parse_meta_json(json_path: str | Path) -> dict[str, pd.DataFrame]:
 def match_campana_producto(nombre_campana: str, keywords_df: pd.DataFrame) -> str:
     """
     Match a campaign name to a product using marketing_keywords table.
+    Supports both ';' and ',' as keyword separators.
     Returns product name or 'Otros'.
     """
     nombre_lower = nombre_campana.lower()
-    for _, row in keywords_df.sort_values("prioridad").iterrows():
-        palabras = str(row["palabras"]).split(",")
+    for _, row in keywords_df.sort_values("prioridad", ascending=False).iterrows():
+        raw = str(row["palabras"])
+        # support both semicolon and comma separators
+        palabras = [p for sep in (";", ",") for p in raw.split(sep)]
         for palabra in palabras:
-            if palabra.strip().lower() in nombre_lower:
+            kw = palabra.strip().lower()
+            if kw and kw in nombre_lower:
                 return row["producto"]
     return "Otros"
 
