@@ -355,6 +355,15 @@ async def admin_upload_page():
 <p class="sub">Happy Lapiz — Panel de administración</p>
 
 <div class="card">
+  <h3>📐 Costos y dimensiones de productos</h3>
+  <label>CSV con Nombre_producto, Costo_bruto_CLP, Costo_neto_CLP, Ancho_cm, Alto_cm, Largo_cm, Peso_fisico_g:</label>
+  <input type="file" id="costosFile" accept=".csv">
+  <p class="hint">Actualiza shopify_productos con costo y dimensiones. Hace matching automático por nombre.</p>
+  <button onclick="uploadCostos()">Cargar Costos → PostgreSQL</button>
+  <div id="costosStatus" class="status"></div>
+</div>
+
+<div class="card">
   <h3>📦 Histórico Shopify</h3>
   <label>CSV de ventas Shopify (2020-2026):</label>
   <input type="file" id="shopifyFile" accept=".csv">
@@ -382,6 +391,27 @@ async def admin_upload_page():
 </div>
 
 <script>
+async function uploadCostos() {
+  const file = document.getElementById('costosFile').files[0];
+  if (!file) { alert('Selecciona el CSV de costos'); return; }
+  const btn = event.target;
+  const status = document.getElementById('costosStatus');
+  btn.textContent = 'Cargando…'; btn.disabled = true;
+  status.style.display = 'none';
+  const fd = new FormData(); fd.append('file', file);
+  try {
+    const r = await fetch('/upload/productos-costos', {method:'POST', body:fd});
+    const j = await r.json();
+    status.className = 'status ' + (r.ok ? 'ok' : 'err');
+    status.style.display = 'block';
+    status.innerHTML = '<pre>' + JSON.stringify(j, null, 2) + '</pre>';
+  } catch(e) {
+    status.className = 'status err'; status.style.display = 'block';
+    status.innerHTML = '<pre>Error: ' + e.message + '</pre>';
+  }
+  btn.textContent = 'Cargar Costos → PostgreSQL'; btn.disabled = false;
+}
+
 async function uploadShopify() {
   const file = document.getElementById('shopifyFile').files[0];
   if (!file) { alert('Selecciona un archivo CSV primero'); return; }
@@ -807,6 +837,135 @@ async def migrar_columnas_meta_ads():
         "mensaje": f"Se agregaron {len(added)} columnas a meta_ads_detalle",
         "columnas_agregadas": added,
     }
+
+
+@app.post("/upload/productos-costos")
+async def upload_productos_costos(file: UploadFile = File(...)):
+    """
+    Agrega costo_bruto_clp, costo_neto_clp, ancho_cm, alto_cm, largo_cm, peso_fisico_g
+    a shopify_productos haciendo match por nombre de producto.
+    """
+    if not file.filename.endswith(".csv"):
+        raise HTTPException(400, "Debe ser un archivo .csv")
+
+    import csv as _csv
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    dest = UPLOADS_DIR / f"productos_costos_{timestamp}.csv"
+    with open(dest, "wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    try:
+        engine = get_engine()
+
+        # Detect encoding and parse CSV
+        rows = []
+        for enc in ("utf-8-sig", "utf-8", "latin-1"):
+            try:
+                with open(dest, newline="", encoding=enc) as f:
+                    rows = list(_csv.DictReader(f))
+                break
+            except UnicodeDecodeError:
+                continue
+
+        if not rows:
+            raise HTTPException(400, "CSV vacío o sin filas válidas")
+
+        # Add columns if they don't exist
+        with engine.begin() as conn:
+            for col, tipo in [
+                ("costo_bruto_clp", "NUMERIC"),
+                ("costo_neto_clp",  "NUMERIC"),
+                ("ancho_cm",        "NUMERIC"),
+                ("alto_cm",         "NUMERIC"),
+                ("largo_cm",        "NUMERIC"),
+                ("peso_fisico_g",   "NUMERIC"),
+            ]:
+                conn.execute(text(
+                    f"ALTER TABLE shopify_productos ADD COLUMN IF NOT EXISTS {col} {tipo}"
+                ))
+
+        # Load existing product titles from DB for fuzzy matching
+        with engine.connect() as conn:
+            db_products = conn.execute(
+                text("SELECT shopify_id, titulo FROM shopify_productos")
+            ).fetchall()
+
+        def best_match(nombre_csv: str) -> str | None:
+            """Return shopify_id of best matching product, or None."""
+            nombre_lower = nombre_csv.lower().strip()
+            # 1. Exact match
+            for sid, titulo in db_products:
+                if titulo and titulo.lower().strip() == nombre_lower:
+                    return sid
+            # 2. CSV name contained in DB title or vice versa
+            for sid, titulo in db_products:
+                if not titulo:
+                    continue
+                t = titulo.lower().strip()
+                if nombre_lower in t or t in nombre_lower:
+                    return sid
+            # 3. All significant words present (>=4 chars)
+            words = [w for w in nombre_lower.split() if len(w) >= 4]
+            if words:
+                for sid, titulo in db_products:
+                    if not titulo:
+                        continue
+                    t = titulo.lower()
+                    if all(w in t for w in words):
+                        return sid
+            return None
+
+        def safe_num(val: str):
+            v = val.strip() if val else ""
+            return float(v) if v else None
+
+        updated, not_found = [], []
+
+        with engine.begin() as conn:
+            for row in rows:
+                nombre = (row.get("Nombre_producto") or "").strip()
+                if not nombre:
+                    continue
+
+                sid = best_match(nombre)
+                if not sid:
+                    not_found.append(nombre)
+                    continue
+
+                conn.execute(text("""
+                    UPDATE shopify_productos SET
+                        costo_bruto_clp = :cb,
+                        costo_neto_clp  = :cn,
+                        ancho_cm        = :ancho,
+                        alto_cm         = :alto,
+                        largo_cm        = :largo,
+                        peso_fisico_g   = :peso,
+                        synced_at       = NOW()
+                    WHERE shopify_id = :sid
+                """), {
+                    "cb":    safe_num(row.get("Costo_bruto_CLP", "")),
+                    "cn":    safe_num(row.get("Costo_neto_CLP", "")),
+                    "ancho": safe_num(row.get("Ancho_cm", "")),
+                    "alto":  safe_num(row.get("Alto_cm", "")),
+                    "largo": safe_num(row.get("Largo_cm", "")),
+                    "peso":  safe_num(row.get("Peso_fisico_g", "")),
+                    "sid":   sid,
+                })
+                updated.append(nombre)
+
+        return {
+            "actualizados": len(updated),
+            "no_encontrados": len(not_found),
+            "productos_actualizados": updated,
+            "productos_no_encontrados": not_found,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        dest.unlink(missing_ok=True)
+        raise HTTPException(500, f"Error: {str(e)}")
 
 
 @app.post("/upload/shopify-historico")
