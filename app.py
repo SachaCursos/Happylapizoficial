@@ -23,7 +23,7 @@ from src.calc.pnl_ml import calcular_pnl_ml
 from src.calc.kpis import check_alerts, classify_product, BREAK_EVEN_MENSUAL_NETO
 from src.calc.costos_fijos import TOTAL_CF_MENSUAL
 from src.ingestion.meta_ads import parse_meta_json, match_campana_producto, get_latest_meta_json
-from src.ingestion.meta_api import fetch_meta_ads, get_meta_gasto_mes
+from src.ingestion.meta_api import fetch_meta_ads, get_meta_gasto_mes, backfill_meta_historico, ensure_meta_tables
 from src.ingestion.mercadolibre import parse_ml_xlsx, load_ml_to_db
 from src.ingestion.cartola import parse_cartola_xlsx, load_cartola_to_db
 from src.reports.dashboard import render_dashboard
@@ -501,6 +501,92 @@ async def upload_shopify_historico(file: UploadFile = File(...)):
     except Exception as e:
         dest.unlink(missing_ok=True)
         raise HTTPException(500, f"Error al cargar CSV: {str(e)}")
+
+
+@app.post("/admin/meta-historico")
+async def admin_meta_historico(
+    desde: str = Query(..., description="Mes inicial YYYY-MM, ej: 2023-01"),
+    hasta: str = Query(default=None, description="Mes final YYYY-MM (default: mes actual)"),
+):
+    """
+    Descarga y guarda el historial de Meta Ads mes a mes desde la Marketing API.
+    Pobla: meta_gasto_diario, meta_campanas_historico.
+    Puede tardar varios minutos dependiendo del rango solicitado.
+    """
+    try:
+        desde_t = (int(desde[:4]), int(desde[5:7]))
+    except Exception:
+        raise HTTPException(400, "Formato inválido para 'desde'. Usar YYYY-MM")
+
+    hasta_t = None
+    if hasta:
+        try:
+            hasta_t = (int(hasta[:4]), int(hasta[5:7]))
+        except Exception:
+            raise HTTPException(400, "Formato inválido para 'hasta'. Usar YYYY-MM")
+
+    engine = get_engine()
+    try:
+        results = backfill_meta_historico(engine=engine, desde=desde_t, hasta=hasta_t, sleep_between=1.0)
+    except RuntimeError as e:
+        raise HTTPException(500, str(e))
+
+    ok = [r for r in results if r.get("ok")]
+    fail = [r for r in results if not r.get("ok")]
+    return {
+        "meses_procesados": len(ok),
+        "meses_con_error": len(fail),
+        "dias_guardados": sum(r.get("dias_guardados", 0) for r in ok),
+        "campanas_guardadas": sum(r.get("campanas_guardadas", 0) for r in ok),
+        "gasto_total": round(sum(r.get("gasto_total", 0) for r in ok), 2),
+        "detalle": results,
+    }
+
+
+@app.get("/api/meta/historico")
+async def api_meta_historico(
+    desde: str = Query(default=None, description="YYYY-MM"),
+    hasta: str = Query(default=None, description="YYYY-MM"),
+):
+    """Consulta gasto diario Meta Ads guardado en PostgreSQL."""
+    engine = get_engine()
+    ensure_meta_tables(engine)
+
+    filtros = []
+    params: dict = {}
+    if desde:
+        filtros.append("dia >= :desde")
+        params["desde"] = f"{desde}-01"
+    if hasta:
+        filtros.append("dia <= :hasta")
+        # last day of month
+        try:
+            a, m = int(hasta[:4]), int(hasta[5:7])
+            from datetime import date as _date, timedelta as _td
+            if m < 12:
+                ultimo = _date(a, m + 1, 1) - _td(days=1)
+            else:
+                ultimo = _date(a + 1, 1, 1) - _td(days=1)
+            params["hasta"] = str(ultimo)
+        except Exception:
+            params["hasta"] = f"{hasta}-31"
+
+    where = f"WHERE {' AND '.join(filtros)}" if filtros else ""
+    with engine.connect() as conn:
+        rows = conn.execute(
+            text(f"SELECT dia, gasto, impresiones, clics, ctr FROM meta_gasto_diario {where} ORDER BY dia"),
+            params,
+        ).fetchall()
+
+    return {
+        "total_dias": len(rows),
+        "gasto_total": round(sum(float(r[1] or 0) for r in rows), 2),
+        "datos": [
+            {"dia": str(r[0]), "gasto": float(r[1] or 0),
+             "impresiones": r[2], "clics": r[3], "ctr": float(r[4] or 0)}
+            for r in rows
+        ],
+    }
 
 
 @app.post("/upload/cartola")
