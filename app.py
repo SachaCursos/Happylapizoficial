@@ -457,12 +457,15 @@ async def upload_meta_csv(file: UploadFile = File(...)):
         if not detalle_rows:
             raise HTTPException(400, "El CSV no tiene filas válidas o las columnas no coinciden.")
 
-        # Ensure tables exist
+        # Ensure tables exist (create + migrate missing columns)
         from src.ingestion.meta_api import ensure_meta_tables
         ensure_meta_tables(engine)
 
-        # Also ensure meta_ads_detalle
         with engine.begin() as conn:
+            # Add compras column if table existed before without it
+            conn.execute(text(
+                "ALTER TABLE meta_gasto_diario ADD COLUMN IF NOT EXISTS compras INTEGER DEFAULT 0"
+            ))
             conn.execute(text("""
                 CREATE TABLE IF NOT EXISTS meta_ads_detalle (
                     id             SERIAL PRIMARY KEY,
