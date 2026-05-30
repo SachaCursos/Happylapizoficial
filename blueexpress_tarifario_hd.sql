@@ -456,3 +456,61 @@ BEGIN
     RETURN resultado;
 END;
 $$ LANGUAGE plpgsql;
+
+-- =============================================================
+-- Vista: costo de envío real por pedido
+-- Combina shopify_pedidos + shopify_lineas_pedido + shopify_productos
+-- + blueexpress_tarifario_hd para mostrar el costo estimado de cada envío.
+-- =============================================================
+CREATE OR REPLACE VIEW v_costo_envio_pedidos AS
+WITH pesos AS (
+    SELECT
+        lp.order_id,
+        lp.titulo,
+        lp.cantidad,
+        sp.largo_cm,
+        sp.ancho_cm,
+        sp.alto_cm,
+        sp.peso_fisico_g,
+        -- Peso volumétrico en gramos: (L*A*H)/4000 * 1000
+        CASE
+            WHEN sp.largo_cm IS NOT NULL AND sp.ancho_cm IS NOT NULL AND sp.alto_cm IS NOT NULL
+            THEN (sp.largo_cm * sp.ancho_cm * sp.alto_cm) / 4.0
+            ELSE NULL
+        END AS peso_vol_g,
+        CASE
+            WHEN sp.peso_fisico_g IS NOT NULL
+                 AND sp.largo_cm IS NOT NULL AND sp.ancho_cm IS NOT NULL AND sp.alto_cm IS NOT NULL
+            THEN GREATEST(sp.peso_fisico_g, (sp.largo_cm * sp.ancho_cm * sp.alto_cm) / 4.0)
+            ELSE sp.peso_fisico_g
+        END AS peso_efectivo_unitario_g
+    FROM shopify_lineas_pedido lp
+    LEFT JOIN shopify_productos sp
+        ON UPPER(TRIM(sp.titulo)) = UPPER(TRIM(lp.titulo))
+),
+pesos_pedido AS (
+    SELECT
+        order_id,
+        SUM(peso_efectivo_unitario_g * COALESCE(cantidad, 1)) AS peso_efectivo_total_g,
+        SUM(peso_fisico_g * COALESCE(cantidad, 1))            AS peso_fisico_total_g,
+        SUM(peso_vol_g * COALESCE(cantidad, 1))               AS peso_vol_total_g,
+        COUNT(*) FILTER (WHERE peso_efectivo_unitario_g IS NULL) AS items_sin_dimensiones
+    FROM pesos
+    GROUP BY order_id
+)
+SELECT
+    p.shopify_id                                        AS order_id,
+    p.created_at                                        AS fecha,
+    p.ciudad_envio                                      AS comuna,
+    pp.peso_fisico_total_g,
+    pp.peso_vol_total_g,
+    pp.peso_efectivo_total_g,
+    ROUND((pp.peso_efectivo_total_g / 1000.0)::numeric, 3) AS peso_efectivo_kg,
+    calcular_envio_hd(
+        p.ciudad_envio,
+        pp.peso_efectivo_total_g / 1000.0
+    )                                                   AS costo_envio_clp,
+    pp.items_sin_dimensiones,
+    p.total_precio                                      AS total_pedido_clp
+FROM shopify_pedidos p
+JOIN pesos_pedido pp ON pp.order_id = p.shopify_id;
