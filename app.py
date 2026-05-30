@@ -27,6 +27,7 @@ from src.calc.pnl_shopify import calcular_pnl_shopify
 from src.calc.pnl_ml import calcular_pnl_ml
 from src.calc.kpis import check_alerts, classify_product, BREAK_EVEN_MENSUAL_NETO
 from src.calc.costos_fijos import TOTAL_CF_MENSUAL
+from src.calc.envio import calcular_costo_envio_pedido, resumen_envios_pedidos
 from src.ingestion.meta_ads import parse_meta_json, match_campana_producto, get_latest_meta_json
 from src.ingestion.meta_api import fetch_meta_ads, get_meta_gasto_mes, backfill_meta_historico, ensure_meta_tables
 from src.ingestion.mercadolibre import parse_ml_xlsx, load_ml_to_db
@@ -1343,3 +1344,45 @@ async def report_monthly(
     pnl_shopify = calcular_pnl_shopify(engine, anio, mes)
     pnl_ml = calcular_pnl_ml(engine, anio, mes)
     return reporte_mensual(pnl_shopify, pnl_ml, anio, mes)
+
+
+# ---------------------------------------------------------------------------
+# Envío BluExpress
+# ---------------------------------------------------------------------------
+
+@app.get("/api/envio/pedido/{order_id}")
+async def api_envio_pedido(order_id: str):
+    """
+    Calcula el costo de envío real de un pedido.
+
+    Usa las dimensiones de cada producto (shopify_productos) para determinar
+    el peso efectivo = MAX(peso_físico, peso_volumétrico) donde
+    peso_volumétrico = (largo_cm × ancho_cm × alto_cm) / 4000 (en kg).
+
+    Busca la tarifa en blueexpress_tarifario_hd por la comuna de destino del pedido.
+    """
+    engine = get_engine()
+    result = calcular_costo_envio_pedido(engine, order_id)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+
+@app.get("/api/envio/resumen")
+async def api_envio_resumen(
+    desde: Optional[str] = Query(default=None, description="YYYY-MM-DD"),
+    hasta: Optional[str] = Query(default=None, description="YYYY-MM-DD"),
+):
+    """
+    Resumen de costo de envío estimado para todos los pedidos en el rango de fechas.
+    Solo incluye pedidos cuya comuna está en el tarifario BluExpress HD.
+    Útil para auditar el gasto real en despachos vs lo presupuestado.
+    """
+    engine = get_engine()
+    resultados = resumen_envios_pedidos(engine, desde=desde, hasta=hasta)
+    total_envios = sum(r["costo_envio_clp"] for r in resultados)
+    return {
+        "total_pedidos_con_tarifa": len(resultados),
+        "total_costo_envio_clp": total_envios,
+        "pedidos": resultados,
+    }
