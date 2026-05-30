@@ -28,6 +28,7 @@ from src.calc.pnl_ml import calcular_pnl_ml
 from src.calc.kpis import check_alerts, classify_product, BREAK_EVEN_MENSUAL_NETO
 from src.calc.costos_fijos import TOTAL_CF_MENSUAL
 from src.calc.envio import calcular_costo_envio_pedido, resumen_envios_pedidos
+from src.ingestion.blueexpress_hd import ensure_blueexpress_hd
 from src.ingestion.meta_ads import parse_meta_json, match_campana_producto, get_latest_meta_json
 from src.ingestion.meta_api import fetch_meta_ads, get_meta_gasto_mes, backfill_meta_historico, ensure_meta_tables
 from src.ingestion.mercadolibre import parse_ml_xlsx, load_ml_to_db
@@ -66,6 +67,14 @@ async def _job_sync_meta_ads():
 
 @app.on_event("startup")
 async def startup():
+    # Migración BluExpress HD — crea tabla/función/vista si no existen
+    if DATABASE_URL:
+        try:
+            ensure_blueexpress_hd(create_engine(DATABASE_URL))
+            log.info("[startup] BluExpress HD: tabla/función/vista OK")
+        except Exception as e:
+            log.error(f"[startup] BluExpress HD migration ERROR: {e}")
+
     # Sync Meta Ads diariamente a las 06:00 hora Chile
     scheduler.add_job(
         _job_sync_meta_ads,
