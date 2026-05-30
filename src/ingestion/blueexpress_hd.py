@@ -452,7 +452,7 @@ def ensure_blueexpress_hd(engine: Engine) -> None:
             CREATE OR REPLACE FUNCTION calcular_envio_hd(p_comuna TEXT, p_peso_kg NUMERIC)
             RETURNS INTEGER AS $$
             DECLARE
-                t blueexpress_tarifario_hd%%ROWTYPE;
+                t RECORD;
                 resultado INTEGER;
             BEGIN
                 SELECT * INTO t FROM blueexpress_tarifario_hd
