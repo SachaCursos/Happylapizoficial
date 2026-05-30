@@ -459,7 +459,7 @@ $$ LANGUAGE plpgsql;
 
 -- =============================================================
 -- Vista: costo de envío real por pedido
--- Combina shopify_pedidos + shopify_lineas_pedido + shopify_productos
+-- Combina shopify_pedidos + shopify_lineas_pedido + shopify_products
 -- + blueexpress_tarifario_hd para mostrar el costo estimado de cada envío.
 -- =============================================================
 CREATE OR REPLACE VIEW v_costo_envio_pedidos AS
@@ -485,8 +485,8 @@ WITH pesos AS (
             ELSE sp.peso_fisico_g
         END AS peso_efectivo_unitario_g
     FROM shopify_lineas_pedido lp
-    LEFT JOIN shopify_productos sp
-        ON UPPER(TRIM(sp.titulo)) = UPPER(TRIM(lp.titulo))
+    LEFT JOIN shopify_products sp
+        ON UPPER(TRIM(sp.title)) = UPPER(TRIM(lp.titulo))
 ),
 pesos_pedido AS (
     SELECT
