@@ -406,6 +406,22 @@ def ensure_blueexpress_hd(engine: Engine) -> None:
     """Crea tabla, función y vista BluExpress HD si no existen. Idempotente."""
     with engine.begin() as conn:
         conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS shopify_products (
+                id            SERIAL PRIMARY KEY,
+                title         TEXT UNIQUE NOT NULL,
+                largo_cm      NUMERIC,
+                ancho_cm      NUMERIC,
+                alto_cm       NUMERIC,
+                peso_fisico_g NUMERIC,
+                peso_cobrado  NUMERIC,
+                updated_at    TIMESTAMPTZ DEFAULT NOW()
+            )
+        """))
+        conn.execute(text(
+            "ALTER TABLE shopify_products ADD COLUMN IF NOT EXISTS peso_cobrado NUMERIC"
+        ))
+
+        conn.execute(text("""
             CREATE TABLE IF NOT EXISTS blueexpress_tarifario_hd (
                 id              SERIAL PRIMARY KEY,
                 region          TEXT,
