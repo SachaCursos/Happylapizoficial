@@ -78,8 +78,8 @@ def calcular_costo_envio_pedido(engine: Engine, order_id: str) -> dict:
             SELECT lp.titulo, lp.sku, lp.cantidad, lp.precio, lp.total_linea,
                    sp.largo_cm, sp.ancho_cm, sp.alto_cm, sp.peso_fisico_g
             FROM shopify_lineas_pedido lp
-            LEFT JOIN shopify_productos sp
-                ON UPPER(TRIM(sp.titulo)) = UPPER(TRIM(lp.titulo))
+            LEFT JOIN shopify_products sp
+                ON UPPER(TRIM(sp.title)) = UPPER(TRIM(lp.titulo))
             WHERE lp.order_id = :oid
         """), {"oid": order_id}).fetchall()
 
